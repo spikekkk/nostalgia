@@ -36,3 +36,10 @@ $ hexo deploy
 ```
 
 More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+
+### 发布到Github
+输入如下命令：
+
+```
+ hexo clean && hexo g && hexo d
+```

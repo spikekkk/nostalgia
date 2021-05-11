@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: nostalgia
 subtitle: ""
-description: ""
+description: "nostalgia"
 keywords:
-author: John Doe
-language: en
+author: sky
+language: zh-CN
 timezone: ""
 
 # URL
@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: butterfly
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
@@ -105,3 +105,13 @@ deploy:
     type: git
     repo: https://github.com/spikekkk/nostalgia.git
     branch: master
+menu:
+    # Home: / || fa fa-home
+    # Archives: /archives/ || fa fa-archive
+    # Tags: /tags/ || fa fa-tags
+    # Categories: /categories/ || fa fa-folder-open
+    # Link: /link/ || fa fa-link
+    # About: /about/ || fa fa-heart
+    #List||fa fa-list:
+    # - Music || /music/ || fa fa-music
+    # - Movie || /movies/ || fa fa-film
