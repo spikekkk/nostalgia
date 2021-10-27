@@ -6,7 +6,7 @@ git init
 git add -A
 git commit -m 'deploy'
 
-git push -f git@github.com:spikekkk/nostalgia.git main
+git push -f git@github.com:spikekkk/nostalgia.git master:main
 
 cd ../
 rm -rf public
