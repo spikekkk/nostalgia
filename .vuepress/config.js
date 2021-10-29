@@ -1,8 +1,8 @@
 module.exports = {
-    title: "kk",
+    title: "nostalgia",
     description: "blog",
-    dest: "public",
-    base: "nostalgia",
+    // dest: "public",
+    base: "/nostalgia/",
     head: [
         [
             "link",
@@ -88,10 +88,14 @@ module.exports = {
         lastUpdated: "Last Updated",
         author: "kk",
         authorAvatar: "/avatar.png",
-        record: "xxxx",
+        record: "nostalgia",
         startYear: "2017",
+        subSidebar: "auto", //在所有页面中启用自动生成子侧边栏，原 sidebar 仍然兼容
     },
     markdown: {
         lineNumbers: true,
+        extendMarkdown: (md) => {
+            md.use(require("markdown-it-disable-url-encode"))
+        },
     },
 }

@@ -4,6 +4,7 @@
     "author": "reco_luan",
     "scripts": {
         "dev": "vuepress dev . --open --host \"localhost\"",
+      
         "build": "vuepress build .",
         "deploy": "bash deploy.sh",
         "push": "bash push.sh"

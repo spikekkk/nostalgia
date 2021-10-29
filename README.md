@@ -1,7 +1,7 @@
 ---
 home: true
-heroText: vuepress-theme-reco
-tagline: A simple and beautiful vuepress blog theme.
+heroText: nostalgia
+tagline: 我未曾珍惜的　我不再拥有.
 # heroImage: /hero.png
 # heroImageStyle: {
 #   maxWidth: '600px',

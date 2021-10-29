@@ -1,0 +1,65 @@
+---
+title: 记录过往项目
+date: 2018-10-09
+tags:
+ - resume
+categories: 
+ - work
+keys:
+ - 'e10adc3949ba59abbe56e057f20f883e'
+---
+
+## 前端简历
+
+> 基本信息
+
+姓名:孙凯
+
+电话:17605587287
+
+学校:沈阳城市学院 \| 本科
+
+邮箱:[theumwelt@163.com](mailto:17605587287@163.com)
+
+> 专业技能
+
+* 熟练掌握CSS,HTML,JS,熟悉Less等预编译语言
+* 熟练运用Typescript&React Hooks&Vue及其周边工具
+* 掌握前端工程化工具Webpack,Git等进行辅助开发
+* 熟悉微信小程序的开发
+* 了解Nodejs
+
+> 项目经验
+
+**2019.09** – **至今**
+
+杭州汉克时代科技有限公司
+
+### **[数字物流解决方案项目](https://antchain.antgroup.com/solutions/shuziwuliu)**
+
+https://antchain.antgroup.com/solutions/shuziwuliu
+
+基于区块链、分布式数字身份、等技术，解决物流运输及资金真实性证明问题，实现数据交叉核验。
+包含电子航运控台,收银台,物流金融控台,保险平台,整体后台管理等7+个PC项目
+
+* 整体项目Owner,负责技术选型,框架搭建
+* 全面拥抱TS,调研并选型较好的实践方案Umi3+ahooks进行项目搭建,助力项目的高复用性
+* 沉淀部分高频组件,如Login,PdfRender,Screenshot等,并发布TechUI库,在团队中推广使用,提高组件复用性
+* 负责其他项目日常迭代&code review
+
+- - -
+
+**2018.09** – **2019.09**
+
+杭州闪宝科技有限公司
+
+### **[闪闪云校项目](https://saas.ishanshan.com)**
+
+https://saas.ishanshan.com
+
+闪闪云校Sass系统重构，用于早教机构完成一站式招生活动、维护、运营与管理。
+
+* 旧项目重构&倒排,选用vue-element-admin最佳实践进行开发,节省前端开发时间
+* 协调PD&UI规范业务设计,归并出全局高频组件,公用类型并设计,助力团队更加专注业务开发
+* 制定了公用样式CSS命名空间规范,并提供相关文档和Demo进行培训讲解,供其他开发人员使用,极大减少前端开发中业务代码&样式逻辑
+* 编写部分api mock模块,解决前后端进度不一致问题
