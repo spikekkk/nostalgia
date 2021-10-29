@@ -1,3 +1,3 @@
 git add .
 git commit -m 'push'
-git push origin blogcode
+git push -f origin blogcode
