@@ -1,7 +1,7 @@
 module.exports = {
     title: "nostalgia",
     description: "blog",
-    // dest: "public",
+    dest: "public",
     base: "/nostalgia/",
     head: [
         [
