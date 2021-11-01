@@ -4,14 +4,15 @@
     "author": "reco_luan",
     "scripts": {
         "dev": "vuepress dev . --open --host \"localhost\"",
-      
         "build": "vuepress build .",
         "deploy": "bash deploy.sh",
         "push": "bash push.sh"
     },
     "devDependencies": {
         "vuepress": "1.8.2",
-        "vuepress-theme-reco": "1.6.6"
+        "vuepress-plugin-nuggets-style-copy": "^1.0.3",
+        "vuepress-theme-reco": "1.6.6",
+        "markdown-it-disable-url-encode": "^1.0.1"
     },
     "description": "blog"
 }

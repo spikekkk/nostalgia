@@ -20,6 +20,7 @@ module.exports = {
         ],
     ],
     theme: "reco",
+    plugins: { "vuepress-plugin-auto-sidebar": {} },
     themeConfig: {
         nav: [
             {
@@ -54,8 +55,10 @@ module.exports = {
                 ],
             },
         ],
+        sidebar: "auto",
         sidebar: {
-            "/docs/theme-reco/": ["", "theme", "plugin", "api"],
+            // "/docs/theme-reco/": ["", "theme", "plugin", "api"],
+            "/blogs/tips/": ["", "ee", "kk"],
         },
         type: "blog",
         blogConfig: {
