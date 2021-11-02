@@ -55,10 +55,10 @@ module.exports = {
                 ],
             },
         ],
-        sidebar: "auto",
+        // sidebar: "auto",
         sidebar: {
             // "/docs/theme-reco/": ["", "theme", "plugin", "api"],
-            "/blogs/tips/": ["", "ee", "kk"],
+            "/blogs/tips/": ["", "es6", "array-loop"],
         },
         type: "blog",
         blogConfig: {
