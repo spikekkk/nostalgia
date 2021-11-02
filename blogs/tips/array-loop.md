@@ -22,7 +22,7 @@ categories:
 
 > **for of 不能给对象用**;允许你遍历 Arrays（数组）, Strings（字符串）, Maps（映射）, Sets（集合）等可迭代的数据结构
 
-```javascript
+```js
 function muti(num) {
     return new Promise((resolve) => {
         setTimeout(() => {

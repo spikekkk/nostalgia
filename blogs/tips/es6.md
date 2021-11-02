@@ -23,7 +23,7 @@ categories:
 -   Map 是`有序结构`
 -   Map 的操作同样很快
 
-```javascript
+```js
 const m = new Map([["key1", "hello"][("key2", 2)][("key3", { x: 99 })]])
 
 m.set("name", "xxxss")
@@ -42,7 +42,7 @@ m.set(fn, "fn key")
 
 关联两个对象
 
-```javascript
+```js
 obj1, obj2
 
 m.set(obj1, obj2)
@@ -51,7 +51,7 @@ m.get(obj1) //即可获取obj2
 
 有序的 Map 也很快
 
-```javascript
+```js
 const m = new Map()
 for (let i = 0; i < 800 * 10000; i++) {
     m.set(i, i)
@@ -67,7 +67,7 @@ console.timeEnd("map find")
     -   数组去重用过此属性
 -   Set 是无需结构,操作快
 
-```JavaScript
+```js
 
 const set=new  Set([10,20,30,40])
 
@@ -82,7 +82,7 @@ set.forEach(val=>console.log(val))
 
 无序 Set 操作很快相比 arr(有序结构)
 
-```JavaScript
+```js
 cosnt set=new Set()
 for(let i=0;i<10000*100;i++){
 set.add(i)
@@ -106,7 +106,7 @@ console.timeEnd('set delete')
   + 因为是弱引用,里面没有index这一属性,引入内部add的数据可能随时被销毁
 
   
-```javaScript
+```js
 const wMap=new WeakMap()
 function fn(){
     const obj={name:'cc'}
