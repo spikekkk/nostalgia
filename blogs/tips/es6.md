@@ -1,6 +1,6 @@
 ---
 title: ES6的一些特性
-date: 2021-09-09
+date: 2020-09-12
 sidebar: auto
 tags:
     - tips

@@ -49,7 +49,7 @@ module.exports = {
                 items: [
                     {
                         text: "GitHub",
-                        link: "https://github.com/recoluan",
+                        link: "https://github.com/spikekkk",
                         icon: "reco-github",
                     },
                 ],
@@ -89,7 +89,7 @@ module.exports = {
         search: true,
         searchMaxSuggestions: 10,
         lastUpdated: "Last Updated",
-        author: "kk",
+        author: "k",
         authorAvatar: "/avatar.png",
         record: "nostalgia",
         startYear: "2017",
