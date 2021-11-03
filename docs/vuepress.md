@@ -11,11 +11,11 @@ categories:
 
 之前一直使用hexo来进行博客搭建,但是繁杂的部署方式以及书写让我转投vuepress的怀抱,做一个流程;方便记录下整个体验过程
 
-##vuepress
+### vuepress
 > [Vue 驱动的静态网站生成器。官方文档立即前往](https://vuepress.vuejs.org/zh/)
 
 因为官方主题太过简陋,采用了reco主题进行搭建
-##[reco主题](https://vuepress-theme-reco.recoluan.com/)
+## [reco主题](https://vuepress-theme-reco.recoluan.com/)
 
 reco主题提供了脚手架可以实现一键创建vuepress项目
 
@@ -80,25 +80,8 @@ tags:
 然后使用 `npm run dev`将项目运行起来
 
 ### 添加摘要
-
-```markdown
----
-title: 这是我的first文章
-date: 2018-09-30
-sidebar: 'auto'
-categories:
- - blog
-tags:
-- first
----
-
-
-::: tip
-你好,这里是摘要
-:::
-<!-- more -->
-
-```
+!--more--
+[摘要语法](https://vuepress-theme-reco.recoluan.com/views/0.x/abstract.html)
 
 ### 使用插件
 [主题自带插件](https://vuepress-theme-reco.recoluan.com/views/plugins/)
