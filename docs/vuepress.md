@@ -93,6 +93,7 @@ tags:
 ### 加密功能
 
 **全局加密**
+
 ```js
 // .vuepress/config.js
 
@@ -264,3 +265,7 @@ blogcode`源代码分支`
 ### 代码块中的语法高亮
 
 支持js,bash,html,css等等[prismjs](https://prismjs.com/)
+
+https://prismjs.com/themes/prism-tomorrow.css 
+
+cdn存在引入不稳定问题,貌似主题作者已经发现,但还是有待解决,不然代码高亮会直接失效

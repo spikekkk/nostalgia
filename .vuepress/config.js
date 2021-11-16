@@ -33,16 +33,16 @@ module.exports = {
                 link: "/timeline/",
                 icon: "reco-date",
             },
-            {
-                text: "Docs",
-                icon: "reco-message",
-                items: [
-                    {
-                        text: "vuepress-reco",
-                        link: "/docs/theme-reco/",
-                    },
-                ],
-            },
+            // {
+            //     text: "Docs",
+            //     icon: "reco-message",
+            //     items: [
+            //         {
+            //             text: "vuepress-reco",
+            //             link: "/docs/theme-reco/",
+            //         },
+            //     ],
+            // },
             {
                 text: "Contact",
                 icon: "reco-message",
@@ -58,7 +58,7 @@ module.exports = {
         // sidebar: "auto",
         sidebar: {
             // "/docs/theme-reco/": ["", "theme", "plugin", "api"],
-            "/blogs/tips/": ["", "es6", "array-loop"],
+            "/blogs/tips/": ["", "es6", "array-loop", "download"],
         },
         type: "blog",
         blogConfig: {
