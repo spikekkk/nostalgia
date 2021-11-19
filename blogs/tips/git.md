@@ -99,3 +99,17 @@ git stash drop  stash@{0}
 ### 查看指定stash的diff
 使用`git stash show`命令，后面可以跟着stash名字
 在该命令后面添加-p或--patch可以查看特定stash的全部diff
+
+## 关联指定orgin仓库
+
+1. git init (初始化)
+
+2. git remote add origin remoteUrl(设置远程remote地址)
+
+3. git pull origin master (拉取远程仓库master文件)
+
+4. git branch --set-upstream-to=origin/master master (将本地master设置为远程master分支)
+
+5. git add .
+6. git commit -m 'xx'
+7. git push
