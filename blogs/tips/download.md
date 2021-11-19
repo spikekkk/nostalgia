@@ -55,6 +55,29 @@ categories:
         // 获取文件名fileName
     const fileName = res.headers["content-disposition"].split("=");
    ```
+   需要注意的是请求头一般是后端自定义的,在本地开发情况下,可以自由获取,
+   但在部署服务器后,默认的请求上， 浏览器只能访问以下默认的 响应头
+    ```
+    Cache-Control
+
+    Content-Language
+
+    Content-Type
+
+    Expires
+
+    Last-Modified
+
+    Pragma
+    ```
+    如果想让浏览器能访问到其他的 响应头的话 需要在服务器上设置 `Access-Control-Expose-Headers`
+
+    ```js
+    Access-Control-Expose-Headers : 'content-disposition'
+    ```
+    这样才能通过`response.header.get('content-disposition')`拿到返回的文件名
+
+
 
 3. 若文件过大,需要等待当前接口返回文件结束才进行下载,需要对下载操作添加防抖设计
 
