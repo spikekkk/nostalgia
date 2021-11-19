@@ -48,7 +48,32 @@ obj1, obj2
 m.set(obj1, obj2)
 m.get(obj1) //即可获取obj2
 ```
+复杂场景使用 Map 对象代替数组操作，map.get(), map.has()，与数组查找相比尤其高效。
 
+```js
+// Map
+const map = new Map([['a', { id: 'a' }], ['b', { id: 'b' }], ['c', { id: 'c' }]]);
+
+// 查找值
+map.has('a');
+// 获取值
+map.get('a');
+// 遍历
+map.forEach(n => n);
+
+// 它可以很容易转换为数组
+Array.from(map.values());
+
+// 数组
+const list = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+
+// 查找值
+list.some(n => n.id === 'a');
+// 获取值
+list.find(n => n.id === 'a');
+// 遍历
+list.forEach(n => n);
+```
 有序的 Map 也很快
 
 ```js

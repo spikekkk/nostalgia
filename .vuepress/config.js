@@ -58,7 +58,7 @@ module.exports = {
         // sidebar: "auto",
         sidebar: {
             // "/docs/theme-reco/": ["", "theme", "plugin", "api"],
-            "/blogs/tips/": ["", "es6", "array-loop", "download"],
+            "/blogs/tips/": ["", "es6", "array-loop", "download", "git"],
         },
         type: "blog",
         blogConfig: {
