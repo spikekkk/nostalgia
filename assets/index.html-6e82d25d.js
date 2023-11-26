@@ -1,0 +1,1 @@
+import{_ as t,o as s,c as n,a as e}from"./app-c5939a72.js";const o={},_=e("p",null,"This is JAVASCRIPT",-1),c=e("p",null,"在工作中遇到的一些细节问题以及自己遗忘的部分",-1),l=[_,c];function a(i,r){return s(),n("div",null,l)}const f=t(o,[["render",a],["__file","index.html.vue"]]);export{f as default};
