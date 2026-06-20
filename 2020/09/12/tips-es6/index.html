@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>ES6的一些特性 · nostalgia</title><meta name="description" content="Map &amp;amp; Set对象是一种无需结构
+
+有序 :操作慢
+无序:操作快,但无序
+
+结合二者优点的数据结构–&amp;gt;二叉树
+Map 和 Object 的区别
+API 不同,Map 可以以任意类型为 key
+Map 是有序结构
+Map 的操作同样很快
+
+const m = new Map([[&quot;k"><meta name="og:description" content="Map &amp;amp; Set对象是一种无需结构
+
+有序 :操作慢
+无序:操作快,但无序
+
+结合二者优点的数据结构–&amp;gt;二叉树
+Map 和 Object 的区别
+API 不同,Map 可以以任意类型为 key
+Map 是有序结构
+Map 的操作同样很快
+
+const m = new Map([[&quot;k"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="ES6的一些特性"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>ES6的一些特性</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2020-09-12</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/frontend/" title="frontend">frontend</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/tips/" title="tips">tips</a><span>&nbsp;</span></span></p><p class="post-abstract"><h2><span id="map-amp-set">Map &amp; Set</span></h2><p>对象是一种无需结构</p>
+<ul>
+<li>有序 :操作慢</li>
+<li>无序:操作快,但<code>无序</code></li>
+</ul>
+<p>结合二者优点的数据结构–&gt;二叉树</p>
+<h3><span id="map-和-object-的区别">Map 和 Object 的区别</span></h3><ul>
+<li>API 不同,Map 可以以任意类型为 key</li>
+<li>Map 是<code>有序结构</code></li>
+<li>Map 的操作同样很快</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> m <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"key1"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">"key2"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">"key3"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">99</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+m<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"xxxss"</span><span class="token punctuation">)</span>
+m<span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span><span class="token string">"key2"</span><span class="token punctuation">)</span>
+m<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span><span class="token string">"key3"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 有序结构</span>
+m<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> key<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+m<span class="token punctuation">.</span>size <span class="token comment" spellcheck="true">//3</span>
+<span class="token comment" spellcheck="true">// 以对象类型为key</span>
+<span class="token keyword">const</span> o <span class="token operator">=</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">"xxx"</span> <span class="token punctuation">}</span>
+m<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"object key"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 以fn类型为key</span>
+<span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+m<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> <span class="token string">"fn key"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关联两个对象</p>
+<pre class="line-numbers language-js"><code class="language-js">obj1<span class="token punctuation">,</span> obj2
+
+m<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>obj1<span class="token punctuation">,</span> obj2<span class="token punctuation">)</span>
+m<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>obj1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//即可获取obj2</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>复杂场景使用 Map 对象代替数组操作，map.get(), map.has()，与数组查找相比尤其高效。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// Map</span>
+<span class="token keyword">const</span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'a'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'b'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'c'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'c'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 查找值</span>
+map<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 获取值</span>
+map<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 遍历</span>
+map<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 它可以很容易转换为数组</span>
+Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 数组</span>
+<span class="token keyword">const</span> list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'a'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'b'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token string">'c'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 查找值</span>
+list<span class="token punctuation">.</span><span class="token function">some</span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> n<span class="token punctuation">.</span>id <span class="token operator">===</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 获取值</span>
+list<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> n<span class="token punctuation">.</span>id <span class="token operator">===</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 遍历</span>
+list<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有序的 Map 也很快</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> m <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">800</span> <span class="token operator">*</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">time</span><span class="token punctuation">(</span><span class="token string">"map find"</span><span class="token punctuation">)</span>
+m<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token number">200000</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">timeEnd</span><span class="token punctuation">(</span><span class="token string">"map find"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="set-和数组-array-的区别">Set 和数组 Array 的区别</span></h3><ul>
+<li>Set 元素不可重复<ul>
+<li>数组去重用过此属性</li>
+</ul>
+</li>
+<li>Set 是无需结构,操作快</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js">
+<span class="token keyword">const</span> <span class="token keyword">set</span><span class="token operator">=</span><span class="token keyword">new</span>  <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token number">40</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span>size
+<span class="token comment" spellcheck="true">// 无序,循环没有index</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>val<span class="token operator">=</span><span class="token operator">></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>无序 Set 操作很快相比 arr(有序结构)</p>
+<pre class="line-numbers language-js"><code class="language-js">cosnt <span class="token keyword">set</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">10000</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">time</span><span class="token punctuation">(</span><span class="token string">'set add'</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">timeEnd</span><span class="token punctuation">(</span><span class="token string">'set add'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">time</span><span class="token punctuation">(</span><span class="token string">'set delete'</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span><span class="token number">500000</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">timeEnd</span><span class="token punctuation">(</span><span class="token string">'set delete'</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="weakmap-amp-weakset">WeakMap &amp; WeakSet</span></h3><ul>
+<li>Weak为弱引用,防止内存泄漏</li>
+<li>WeakMap只能用<code>object</code>作为<code>key</code></li>
+<li>WeakSet只能用<code>object</code>做<code>value</code></li>
+<li>没有forEach和size,只能用add delete has<ul>
+<li>因为是弱引用,里面没有index这一属性,引入内部add的数据可能随时被销毁</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> wMap<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">WeakMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">const</span> obj<span class="token operator">=</span><span class="token punctuation">{</span>name<span class="token punctuation">:</span><span class="token string">'cc'</span><span class="token punctuation">}</span>
+    wMap<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span><span class="token string">'name info'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// fn调用完成,按照标记清除的垃圾回收机制,obj已经销毁,但是不影响弱引用关系</span>
+<span class="token comment" spellcheck="true">// 防止内存泄漏</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>wMap<span class="token punctuation">)</span>
+↧
+WeakMap <span class="token punctuation">{</span><span class="token punctuation">{</span>…<span class="token punctuation">}</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'name info'</span><span class="token punctuation">}</span>
+<span class="token punctuation">[</span><span class="token punctuation">[</span>Entries<span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token number">0</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>Object <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"name info"</span><span class="token punctuation">}</span>
+<span class="token punctuation">[</span><span class="token punctuation">[</span>Prototype<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">:</span> WeakMap
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4><span id="weakmap使用场景">WeakMap使用场景</span></h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> userInfo<span class="token operator">=</span><span class="token punctuation">{</span>name<span class="token punctuation">:</span><span class="token string">'kk'</span><span class="token punctuation">}</span>
+<span class="token keyword">const</span> cityInfo<span class="token operator">=</span><span class="token punctuation">{</span>city<span class="token punctuation">:</span><span class="token string">'北京'</span><span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//让俩对象产生关联--常规以属性方式关联</span>
+userInfo<span class="token punctuation">.</span>city<span class="token operator">=</span>cityInfo<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 让二者保持独立关系</span>
+<span class="token comment" spellcheck="true">//建立关联关系,而且二者保持独立-->不影响彼此的**销毁逻辑**</span>
+wMpa<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>userInfo<span class="token punctuation">,</span>cityInfo<span class="token punctuation">)</span>
+wMap<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>useInfo<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4><span id="weakset">WeakSet</span></h4><ul>
+<li>弱引用,防止内存泄漏,只能用对象作为value</li>
+<li>没有forEach和size,只能用add delete has</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js">cosnt wSet<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">WeakSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">const</span> obj<span class="token operator">=</span><span class="token punctuation">{</span>name<span class="token punctuation">:</span><span class="token string">'kk'</span><span class="token punctuation">}</span>
+    wSet<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 引用关系不耽误gc清理机制正常运行</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2020/09/12/tips-es6/%20nostalgia%20ES6的一些特性"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2021/07/24/tips-array-loop/" title="数组循环"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: 数组循环</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2020/05/29/frontend-question-README/" title="一些面试被问到的问题">下一篇: 一些面试被问到的问题&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>关于Git的一些点 · nostalgia</title><meta name="description" content="大多数情况下，看提交历史的人跟提交代码的人都不是同一个人，当别人阅读你的提交历史时，他很可能是不知道具体代码细节的，你如何在最短的时间内让他一眼知道每次提交的意义：
+每次提交影响的具体范围？这个bug在哪次提交中被修复了？这个新功能是在哪次提交中增加的？修改是否向下兼容？是否回滚了代码？是否只是修改"><meta name="og:description" content="大多数情况下，看提交历史的人跟提交代码的人都不是同一个人，当别人阅读你的提交历史时，他很可能是不知道具体代码细节的，你如何在最短的时间内让他一眼知道每次提交的意义：
+每次提交影响的具体范围？这个bug在哪次提交中被修复了？这个新功能是在哪次提交中增加的？修改是否向下兼容？是否回滚了代码？是否只是修改"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="关于Git的一些点"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>关于Git的一些点</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2020-02-13</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/frontend/" title="frontend">frontend</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/git/" title="git">git</a><span>&nbsp;</span></span></p><p class="post-abstract"><p>大多数情况下，看提交历史的人跟提交代码的人都不是同一个人，当别人阅读你的提交历史时，他很可能是不知道具体代码细节的，你如何在最短的时间内让他一眼知道每次提交的意义：</p>
+<p>每次提交影响的具体范围？<br>这个bug在哪次提交中被修复了？<br>这个新功能是在哪次提交中增加的？<br>修改是否向下兼容？<br>是否回滚了代码？<br>是否只是修改了文档、调整了代码格式？<br>是否修改了测试、是否进行了重构？<br>是否对代码进行了性能优化？</p>
+<p>这些都是提交规范的作用。</p>
+<h2><span id="git-提交commit">git 提交commit</span></h2><p>每个类型值都表示了不同的含义，类型值必须是以下的其中一个：</p>
+<pre><code>feat：提交新功能
+fix：修复了bug
+docs：只修改了文档
+style：调整代码格式，未修改代码逻辑（比如修改空格、格式化、缺少分号等）
+refactor：代码重构，既没修复bug也没有添加新功能
+perf：性能优化，提高性能的代码更改
+test：添加或修改代码测试
+chore：对构建流程或辅助工具和依赖库（如文档生成等）的更改
+</code></pre>
+<h2><span id="git-clean-删除依赖更新包">git clean 删除依赖更新包</span></h2><p>git clean 从你的工作目录中删除所有没有 tracked，没有被管理过的文件,删除工作中所有node_modules依赖项</p>
+<p>未添加到版本控制，且不在.gitignore中的，都是Untracked的状态</p>
+<pre><code>n ：查看将要被删除的文件，并不实际删除文件
+
+d ：删除未跟踪目录以及目录下的文件，如果目录下包含其他git仓库文件，并不会删除（-dff可以删除）。（将 .gitignore 文件标记的文件全部删除）
+
+f ：如果 git cofig 下的 clean.requireForce 为true，那么clean操作需要-f(--force)来强制执行
+
+x ：删除没有被 track 的文件
+</code></pre>
+<p>强制删除依赖</p>
+<pre><code>git clean -dfx
+</code></pre>
+<h2><span id="git-stash">git stash</span></h2><p>场景:在当前分支进行迭代开发，突然有线上bugfix,但是还不想把现在的修改提交，也不希望在Git上看到当前修改的版本</p>
+<p>git stash会把所有未提交的修改（包括暂存的和非暂存的）都保存起来，用于后续恢复当前工作目录。<br>比如下面的中间状态，通过git stash命令推送一个新的储藏，当前的工作目录就干净了。</p>
+<blockquote>
+<p>stash是本地的，不会通过git push命令上传到git server上</p>
+</blockquote>
+<h3><span id="缓存本地-amp-list查看">缓存本地 &amp; list查看</span></h3><p>推荐stash加一个message，用于记录版本，使用git stash save取代git stash命令<br>git stash list</p>
+<pre><code>git stash save &quot;test-stash&quot;
+
+git stash list
+
+stash@{0}: On autoswitch: test-stash
+</code></pre>
+<h3><span id="重新应用缓存">重新应用缓存</span></h3><pre><code>git stash pop
+</code></pre>
+<p>这个指令将缓存堆栈中的第一个stash删除，并将对应修改应用到当前的工作目录</p>
+<p>可以使用<code>git stash apply</code>命令，将缓存堆栈中的stash多次应用到工作目录中，但并不删除stash拷贝</p>
+<h3><span id="移除stash">移除stash</span></h3><pre><code>git stash drop  stash@{0}   
+</code></pre>
+<p>后面可以跟着stash名字<br>或者使用<code>git stash clear</code>命令，删除所有缓存的stash</p>
+<h3><span id="查看指定stash的diff">查看指定stash的diff</span></h3><p>使用<code>git stash show</code>命令，后面可以跟着stash名字<br>在该命令后面添加-p或–patch可以查看特定stash的全部diff</p>
+<h2><span id="关联指定orgin仓库">关联指定orgin仓库</span></h2><ol>
+<li><p>git init (初始化)</p>
+</li>
+<li><p>git remote add origin remoteUrl(设置远程remote地址)</p>
+</li>
+<li><p>git pull origin master (拉取远程仓库master文件)</p>
+</li>
+<li><p>git branch –set-upstream-to&#x3D;origin&#x2F;master master (将本地master设置为远程master分支)</p>
+</li>
+<li><p>git add .</p>
+</li>
+<li><p>git commit -m ‘xx’</p>
+</li>
+<li><p>git push</p>
+</li>
+</ol>
+<h2><span id="重命名仓库">重命名仓库</span></h2><h3><span id="重命名本地分支">重命名本地分支</span></h3><ul>
+<li>在当前分支</li>
+</ul>
+<ol>
+<li>git branch -m new_branch_name</li>
+</ol>
+<ul>
+<li>不在当前分支</li>
+</ul>
+<ol>
+<li>git  branch -m old_branch_name new_branch_name</li>
+</ol>
+<h3><span id="重命名远端分支在当前分支且与远端分支名称一致">重命名远端分支（在当前分支且与远端分支名称一致）</span></h3><ul>
+<li>重命名本地分支</li>
+</ul>
+<ol>
+<li>git branch -m new_branch_name</li>
+</ol>
+<ul>
+<li>删除远程分支</li>
+</ul>
+<ol>
+<li>git  push –delete origin old_branch_name</li>
+</ol>
+<ul>
+<li>上传新命名的本地分支</li>
+</ul>
+<ol>
+<li>git push origin new_branch_name</li>
+</ol>
+<ul>
+<li>关联修改后的本地与远端分支</li>
+</ul>
+<ol>
+<li>git branch –set-upstream-to origin&#x2F;new_branch_name</li>
+</ol>
+<h2><span id="实用工具推荐">实用工具推荐</span></h2><h3><span id="gui-工具">GUI 工具</span></h3><ul>
+<li>SourceTree: 功能强大的 Git GUI 客户端</li>
+<li>GitKraken: 现代化的 Git 客户端</li>
+<li>GitHub Desktop: GitHub 官方客户端</li>
+</ul>
+<h3><span id="命令行增强">命令行增强</span></h3><ul>
+<li>lazygit: 终端 UI 界面</li>
+<li>diff-so-fancy: 优化 diff 输出</li>
+<li>git-flow: Git Flow 工作流命令行工具</li>
+</ul>
+<h3><span id="vs-code-插件">VS Code 插件</span></h3><ul>
+<li>GitLens: Git 历史记录增强</li>
+<li>Git Graph: 可视化提交历史</li>
+<li>Git History: 文件历史查看</li>
+</ul>
+<h2><span id="git-工作流">Git 工作流</span></h2><h3><span id="git-flow-工作流">Git Flow 工作流</span></h3><ul>
+<li>master: 主分支，用于生产环境</li>
+<li>develop: 开发分支，用于开发环境</li>
+<li>feature&#x2F;*: 特性分支，用于新功能开发</li>
+<li>release&#x2F;*: 发布分支，用于版本发布</li>
+<li>hotfix&#x2F;*: 热修复分支，用于生产环境紧急修复</li>
+</ul>
+<h3><span id="常用分支操作">常用分支操作</span></h3><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建并切换到新分支</span>
+<span class="token function">git</span> checkout -b feature/new-feature
+
+<span class="token comment" spellcheck="true"># 合并分支</span>
+<span class="token function">git</span> merge feature/new-feature
+
+<span class="token comment" spellcheck="true"># 变基操作</span>
+<span class="token function">git</span> rebase develop
+
+<span class="token comment" spellcheck="true"># 解决冲突后继续变基</span>
+<span class="token function">git</span> rebase --continue
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2020/02/13/tips-git/%20nostalgia%20关于Git的一些点"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2020/05/29/tips-README/" title="一些JS基础"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: 一些JS基础</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2019/12/13/tips-download/" title="下载的一些tips">下一篇: 下载的一些tips&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

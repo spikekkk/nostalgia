@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>React · nostalgia</title><meta name="description" content="React组件通信
+父子组件props传递
+自定义事件
+Redux和Context
+
+生命周期当外部的 props 改变时，如何再次执行请求数据、更改状态等操作—re-render阶段进行二次更新
+使用 componentWillReceiveProps
+数据共享 redux 及 原理在React中"><meta name="og:description" content="React组件通信
+父子组件props传递
+自定义事件
+Redux和Context
+
+生命周期当外部的 props 改变时，如何再次执行请求数据、更改状态等操作—re-render阶段进行二次更新
+使用 componentWillReceiveProps
+数据共享 redux 及 原理在React中"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="React"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>React</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2021-08-22</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/frontend/" title="frontend">frontend</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/react/" title="react">react</a><span>&nbsp;</span></span></p><p class="post-abstract"><h2><span id="react">React</span></h2><h3><span id="组件通信">组件通信</span></h3><ul>
+<li>父子组件props传递</li>
+<li>自定义事件</li>
+<li>Redux和Context</li>
+</ul>
+<h3><span id="生命周期">生命周期</span></h3><p>当外部的 <code>props</code> 改变时，如何再次执行请求数据、更改状态等操作—re-render阶段进行二次更新</p>
+<p>使用 <code>componentWillReceiveProps</code></p>
+<h3><span id="数据共享-redux-及-原理">数据共享 <code>redux</code> 及 原理</span></h3><p>在React中，数据在组件中是单向流动的，数据从一个方向父组件流向子组件（通过props）,所以，两个非父子组件之间通信就相对麻烦，redux的出现就是为了解决state里面的数据问题</p>
+<ul>
+<li>view<ul>
+<li>action<ul>
+<li>dispatch<ul>
+<li>reducer<ul>
+<li>state<ul>
+<li>view</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Redux是将整个应用状态存储到一个地方上称为**<code>store</code><strong>,里面保存着一个状态树</strong>store tree**,组件可以派发(<code>dispatch</code>)行为(<code>action</code>)给store,而不是直接通知其他组件，组件内部通过订阅<strong>store</strong>中的状态**<code>state</code>**来刷新自己的视图。</p>
+<p>发布订阅模式</p>
+<p><img src="/nostalgia/./questionImg/Untitled.png" alt="Untitled"></p>
+<h3><span id="react可以在render中访问ref吗">React可以在render中访问ref吗?</span></h3><p>React提供的这个<code>ref</code>属性，<strong>表示为对组件真正实例的引用，其实就是<code>ReactDOM.render()返回的组件实例</code></strong>；需要区分一下，<code>ReactDOM.render()</code>渲染组件时返回的是组件实例；而渲染dom元素时，返回是具体的dom节点。</p>
+<p>当 ref 对象内容发生变化时，useRef 并不会通知你。变更 <code>.current</code> 属性不会引发组件重新渲染。如果想要在 React 绑定或解绑 DOM 节点的 ref 时运行某些代码，则需要使用 <code>callback ref</code> 来实现。</p>
+<p>不要在组件的<code>render</code>方法中访问<code>ref</code>引用，<code>render</code>方法只是返回一个虚拟dom，这时组件不一定挂载到dom中或者render返回的虚拟dom不一定会更新到dom中。</p>
+<h3><span id="state和props有什么区别">State和Props有什么区别?</span></h3><ul>
+<li><code>setState()</code>会对一个组件的 <code>state</code> 对象安排一次<code>更新</code>。当 <code>state</code> 改变了，该组件就会重新<code>re-render</code>渲染</li>
+</ul>
+<p><strong>区别:</strong></p>
+<p><code>props（“properties” 的缩写）</code>和 <code>state</code> 都是普通的 <code>JavaScript</code> 对象。它们都是用来保存信息的，这些信息可以控制组件的渲染输出，而它们的几个重要的不同点就是：</p>
+<ul>
+<li><code>props</code> 是传递给组件的（类似于函数的形参），而 <code>state</code> 是在组件内被组件自己管理的（类似于在一个函数内声明的变量）。</li>
+<li><code>props</code> 是不可修改的，所有 <code>React</code> 组件都必须像纯函数一样保护它们的 <code>props</code> 不被更改。 由于 <code>props</code> 是传入的，并且它们不能更改，因此我们可以将任何仅使用 <code>props</code> 的 <code>React</code> 组件视为 <code>pureComponent</code>，也就是说，在相同的输入下，它将始终呈现相同的输出。</li>
+<li><code>state</code> 是在组件中创建的，一般在 <code>constructor</code>中初始化 <code>state</code></li>
+<li><code>state</code> 是多变的、可以修改，每次<code>setState</code>都异步更新的。</li>
+</ul>
+<h3><span id="react-中-ref-是干什么用的有哪些使用场景"><strong>react 中 ref 是干什么用的，有哪些使用场景</strong></span></h3><ol>
+<li>挂到组件（这里组件指的是有状态组件）上的ref表示对组件实例的引用，</li>
+<li>挂载到dom元素上时表示具体的dom元素节点取得深层次的dom的结构。进行操作<br>主要是对表格滚动条的操作</li>
+<li>默认情况下，<strong>你不能在函数组件上使用 <code>ref</code> 属性</strong>，因为它们没有实例<ol>
+<li>如果要在函数组件中使用 <code>ref</code>，你可以使用 <code>[forwardRef](https://zh-hans.reactjs.org/docs/forwarding-refs.html)</code>（可与 <code>[useImperativeHandle](https://zh-hans.reactjs.org/docs/hooks-reference.html#useimperativehandle)</code> 结合使用），或者可以将该组件转化为 class 组件</li>
+</ol>
+</li>
+</ol>
+<h3><span id="react-中cloneelement-与-createelement-各是什么"><strong>React 中，cloneElement 与 createElement 各是什么</strong></span></h3><pre class="line-numbers language-jsx"><code class="language-jsx">React<span class="token punctuation">.</span><span class="token function">cloneElement</span><span class="token punctuation">(</span>
+  element<span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>props<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token operator">...</span>children<span class="token punctuation">]</span>
+<span class="token punctuation">)</span>
+
+React<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span>
+
+  type<span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>props<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token operator">...</span>children<span class="token punctuation">]</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>直接上 API，很容易得出结论：首参不一样。这也是他们的最大区别：</p>
+<ol>
+<li><code>cloneElement</code>，根据 Element 生成新的 Element</li>
+<li><code>createElement</code>，根据 Type 生成新的 Element</li>
+</ol>
+<p>然而，此时估计还是云里雾里，含糊不清，需要弄清它，首先要明白俩概念</p>
+<ol>
+<li>Type</li>
+<li>Element</li>
+</ol>
+<h3><span id="hooks-与-class-组件的区别">Hooks 与 class 组件的区别</span></h3><ul>
+<li>没有生命周期</li>
+<li>没有实例</li>
+<li>没有state</li>
+</ul>
+<h3><span id="你在开发过程中使用-hook-遇到过的痛点是什么">你在开发过程中使用 hook 遇到过的痛点是什么</span></h3><p>每次 render 都有一份新的状态，数据卡在闭包里，捕获了每次 render 后的 state，也就导致了输出原来的 state</p>
+<p>调用 <code>setState</code> 其实是异步的 —— 不要指望在调用 <code>setState</code> 之后，<code>this.state</code> 会立即映射为新的值。</p>
+<p>如果你需要基于当前的 <code>state</code> 来计算出新的值，那你应该传递一个函数fun，而不是一个对象obj。</p>
+<h3><span id="setstate初始化值只有第一次有效">setState初始化值,只有第一次有效</span></h3><ul>
+<li>render —&gt;<code>初始化state的值</code> - re-render—&gt;<code>只恢复初始化的值</code>,不会再重新设置新的值, - <code>只能用setName修改</code></li>
+<li>因为useState的更新函数会直接替换老的state，所以我们在对<code>对象</code>或者<code>数组</code>的state做增删的时候不能像以前直接对数组使用push，pop，splice等直接改变数组的方法<ul>
+<li><p>使用数组解构生成一个新数组，在数组后面加上我们新增的随机数达成数组新增项，使用filter数组过滤方法来实现我们删除其中项的操作</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token function">setCounts</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+      <span class="token operator">...</span>counts<span class="token punctuation">,</span>
+      randomCount
+    <span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 使用数组filter方法，过滤删除其中不需要的项</span>
+    <span class="token function">setCounts</span><span class="token punctuation">(</span>counts<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> index <span class="token operator">!==</span> counts<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">setCounts</span><span class="token punctuation">(</span>counts <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+      <span class="token keyword">const</span> randomCount <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">)</span>
+      <span class="token comment" spellcheck="true">// 简单使用JSON.parse及JSON.stringify深拷贝一个新的数组和对象(实际项目中建议自己写递归深拷贝函数)，然后对其操作返回</span>
+      <span class="token keyword">let</span> newCounts <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>counts<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      newCounts<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>randomCount<span class="token punctuation">)</span>
+      <span class="token keyword">return</span> newCounts
+    <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3><span id="useeffect内部不能修改state">useEffect内部不能修改state</span></h3><ul>
+<li><p><code>setState</code>在<code>useEffect</code>中无法起到作用?为什么</p>
+</li>
+<li><p>useEffect第二个参数为空数组的时候，组件更新时“<code>会引用到先前渲染中的旧变量</code>”，具体实现猜测是useEffect<code>保存</code>了<code>内部引用</code>的参数</p>
+<ul>
+<li>没有依赖时候,re-render会重新执行<code>effect函数</code></li>
+<li><code>useEffect</code>中使用<code>setState</code></li>
+<li>setState用于渲染dom的时候，会触发useEffect，从而触发循环，导致内存耗尽</li>
+</ul>
+</li>
+<li><p><code>每次 render 都有一份新的状态，数据卡在闭包里</code>，捕获了每次 render 后的 state，也就导致了输出原来的 state</p>
+</li>
+<li><p>可以通过 useRef 来保存 state。</p>
+<ul>
+<li>ref 在组件中只存在一份，无论何时使用它的引用都不会产生变化，因此可以来解决闭包引发的问题。</li>
+</ul>
+<p>  <strong>调用顺序跟pureFun组件关联</strong>
+  </p>
+</li>
+<li><p>函数组件,纯函数,<code>执行完即刻销毁</code></p>
+</li>
+<li><p>组件初始化 || <code>re-render</code></p>
+<ul>
+<li>都会<code>重新执行一次fun组件</code>,获取最新的组件</li>
+<li>和class组件的不同—class组件局<code>有实例,组件不销毁,实例一直再</code></li>
+</ul>
+</li>
+</ul>
+<h3><span id="usememo-和-usecallback-区别">useMemo 和 useCallback 区别</span></h3><ul>
+<li><p><code>useCallback</code>用来缓存函数</p>
+<p>  父组件给<code>子组件传递参数</code>为<code>普通函数</code>时，父组件每次更新子组件都会更新，但是大部分情况子组件更新是没必要的，这时候我们用<code>useCallback</code>来定义函数，并把这个函数传递给子组件，子组件就会根据依赖项再更新了</p>
+<ul>
+<li><code>父组件更新</code>,函数进行重载—&gt;子组件被迫渲染</li>
+<li>useCallback进行缓存n,不更新子组件方法</li>
+</ul>
+</li>
+<li><p><code>useMemo</code>缓存数据</p>
+<p>  <code>useMemo</code>可以初略理解为Vue中的计算属性<code>computer</code>，在依赖的某一属性改变的时候自动执行里面的计算并返回最终的值(并缓存，依赖性改变时才重新计算)，对于性能消耗比较大的一定要使用useMemo不然每次更新都会重新计算</p>
+<ul>
+<li>父组件更新,根据数据依赖—选择性的—渲染子组件</li>
+<li>使用场景<ul>
+<li>作为props传递的函数，集合memo一起使用；</li>
+<li>作为更新触发的依赖项 主要目的是为了避免高昂的计算和不必要的重复渲染</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3><span id="手写-usestate-useeffect">手写 useState， useEffect</span></h3><h3><span id="hooks的性能优化有哪些方式">hooks的性能优化有哪些方式</span></h3><p>若出现十几或几十个 <code>useState</code> 的时候，可读性就会变差，这个时候就需要相关性的组件化了。以逻辑为导向，抽离在不同的文件中，借助 <code>React.memo</code> 来屏蔽其他 <code>state</code> 导致的 <code>rerender</code>。</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">const</span> Position <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">memo</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> position <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">:</span> PositionProps<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token comment" spellcheck="true">// position 相关逻辑</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token entity" title="&#123;">&amp;#123;</span>position<span class="token punctuation">.</span>left<span class="token entity" title="&#125;">&amp;#125;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因此在 <code>React hooks</code> 组件中尽量不要写流水线代码，保持在 200 行左右最佳，通过组件化降低耦合和复杂度，还能优化一定的性能。</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">function</span> <span class="token function">Counter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>count<span class="token punctuation">,</span> setCount<span class="token punctuation">]</span> <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">function</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token function">setCount</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token entity" title="&#125;">&amp;#125;</span>
+  <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ChildComponent</span> <span class="token attr-name">count</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;count&amp;#125;</span> <span class="token attr-name">onClick</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;increment&amp;#125;</span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>hooks</code> 的写法已经埋了一个坑。在 <code>count</code> 状态<code>更新</code>的时候， <code>Counter</code> 组件会重新执行，这个时候会重新创建一个新的函数 <code>increment</code>。这样传递给 <code>ChildComponent</code> 的 <code>onClick</code> 每次都是一个新的函数，从而导致 <code>ChildComponent</code> 组件的 <code>React.memo</code> 失效。</p>
+<p>解决办法:</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">function</span> usePersistFn<span class="token operator">&lt;</span>T <span class="token keyword">extends</span> <span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">:</span> any<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> any<span class="token operator">></span><span class="token punctuation">(</span>fn<span class="token punctuation">:</span> T<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">const</span> ref <span class="token operator">=</span> React<span class="token punctuation">.</span>useRef<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Function</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Cannot call function while rendering.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  ref<span class="token punctuation">.</span>current <span class="token operator">=</span> fn<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> React<span class="token punctuation">.</span><span class="token function">useCallback</span><span class="token punctuation">(</span>ref<span class="token punctuation">.</span>current <span class="token keyword">as</span> T<span class="token punctuation">,</span> <span class="token punctuation">[</span>ref<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 建议使用 `usePersistFn`</span>
+<span class="token keyword">const</span> increment <span class="token operator">=</span> <span class="token function">usePersistFn</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token function">setCount</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 或者使用 useCallback</span>
+<span class="token keyword">const</span> increment <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token function">setCount</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面声明了 <code>usePersistFn</code> 自定义 <code>hook</code>，可以保证函数地址在本组件中永远不会变化。完美解决 <code>useCallback</code> 依赖值变化而重新生成新函数的问题，逻辑量大的组件强烈建议使用。</p>
+<p>不仅仅是函数，比如每次 <code>render</code> 所创建的新对象，传递给子组件都会有此类问题。尽量不在组件的参数上传递因 <code>render</code> 而创建的对象，比如 </p>
+<pre><code>style=&#123;&#123; width: 0 &#125;&#125; 
+</code></pre>
+<p>此类的代码用 <code>React.useMemo</code> 来优化。</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">const</span> CustomComponent <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">memo</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> width <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">:</span> CustomComponentProps<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">const</span> style <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">useMemo</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> width <span class="token entity" title="&#125;">&amp;#125;</span> <span class="token keyword">as</span> React<span class="token punctuation">.</span>CSSProperties<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>width<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ChildComponent</span> <span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;style&amp;#125;</span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>style</code> 若不需改变，可以提取到组件外面声明。尽管这样做写法感觉太繁琐，但是不依赖 <code>React.memo</code> 重新实现的情况下，是优化性能的有效手段。</p>
+<h3><span id="为什么-hook-不能写在-if-amp-for循环">为什么 hook 不能写在 if &amp; for循环</span></h3><p>判断里 hooks在初始化时候是以<code>链表形式存储</code>的，后续<code>更新</code>都是按照这个<code>链表顺序</code>执行的 hooks的基本模式原理–&gt;<code>闭包+链表</code></p>
+<h3><span id="react设计理念及原理-uix3dfnstate">react设计理念及原理 UI&#x3D;fn(state)</span></h3><h3><span id="什么是单一数据流为什么要这样做">什么是单一数据流，为什么要这样做</span></h3><p>单向数据流（Unidirectional data flow）方式使用一个上传数据流和一个下传数据流进行双向数据通信，两个数据流之间相互独立。单向数据流指只能从一个方向来修改状态。</p>
+<p>与单向数据流对对应的是双向数据流（也叫双向绑定）。在双向数据流中，Model（可以理解为状态的集合） 中可以修改自己或其他Model的状态， 用户的操作（如在输入框中输入内容）也可以修改状态。这使改变一个状态有可能会触发一连串的状态的变化，最后很难预测最终的状态是什么样的。使得代码变得很难调试</p>
+<h3><span id></span></h3><h3><span id="如果没有redux让你去设计一个全局状态管理你会怎样去实现看下-usemodel的实现">如果没有redux，让你去设计一个全局状态管理，你会怎样去实现（看下 useModel的实现）</span></h3><p>useContext ➕ useReducer</p>
+<h3><span id="react-中-fiber-是用来做什么的"><strong>React 中 fiber 是用来做什么的</strong></span></h3><p>因为JavaScript单线程的特点，每个同步任务不能耗时太长，不然就会让程序不会对其他输入作出相应，React的更新过程就是犯了这个禁忌，而React Fiber就是要改变现状。 而可以通过分片来破解JavaScript中同步操作时间过长的问题。</p>
+<p>把一个耗时长的任务分成很多小片，每一个小片的运行时间很短，虽然总时间依然很长，但是在每个小片执行完之后，都给其他任务一个执行的机会，这样唯一的线程就不会被独占，其他任务依然有运行的机会。</p>
+<p>React Fiber把更新过程碎片化，每执行完一段更新过程，就把控制权交还给React负责任务协调的模块，看看有没有其他紧急任务要做，如果没有就继续去更新，如果有紧急任务，那就去做紧急任务。</p>
+<p>维护每一个分片的数据结构，就是Fiber。</p>
+<h3><span id="redux-和-mobx-有什么不同"><strong>redux 和 mobx 有什么不同</strong></span></h3><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6924572729886638088">https://juejin.cn/post/6924572729886638088</a></p>
+<p>Redux更多的是遵循函数式编程（Functional Programming, FP）思想，而Mobx则更多从面相对象角度考虑问题。</p>
+<p>store是应用管理数据的地方，在Redux应用中，我们总是将所有共享的应用数据集中在一个大的store中，而Mobx则通常按模块将应用状态划分，在多个独立的store中管理。</p>
+<p>Redux默认以JavaScript原生对象形式存储数据，而Mobx使用可观察对象：</p>
+<ol>
+<li>Redux需要手动追踪所有状态对象的变更；</li>
+<li>Mobx中可以监听可观察对象，当其变更时将自动触发监听；</li>
+</ol>
+<h3><span id="虚拟dom-amp-diff">虚拟dom &amp; diff</span></h3><ul>
+<li>虚拟 DOM 最大的优势在于<strong>抽象了原本的渲染过程</strong>，实现了<code>跨平台</code>的能力，而不仅仅局限于浏览器的 DOM，可以是安卓和 IOS 的原生组件，可以是近期很火热的小程序，也可以是各种 GUI。</li>
+<li>vdom 把渲染过程抽象化了，从而使得组件的抽象能力也得到提升，并且可以适配 DOM 以外的渲染目标。</li>
+<li>Virtual DOM 在牺牲(牺牲很关键)部分性能的前提下，增加了可维护性，这也是很多框架的通性。 实现了对 DOM 的集中化操作，在数据改变时先对虚拟 DOM 进行修改，再反映到真实的 DOM中，用最小的代价来更新DOM，提高效率(提升效率要想想是跟哪个阶段比提升了效率，别只记住了这一条)。</li>
+<li>打开了函数式 UI 编程的大门。</li>
+<li>可以渲染到 DOM 以外的端，使得框架跨平台，比如 ReactNative，React VR 等。</li>
+<li>可以更好的实现 SSR，同构渲染等。这条其实是跟上面一条差不多的。</li>
+<li>组件的高度抽象化。</li>
+</ul>
+<blockquote>
+<p>虚拟 DOM 的缺点</p>
+</blockquote>
+<ul>
+<li>首次渲染大量 DOM 时，由于多了一层虚拟 DOM 的计算，会比 innerHTML 插入慢。</li>
+<li>虚拟 DOM 需要在内存中的维护一份 DOM 的副本(更上面一条其实也差不多，上面一条是从速度上，这条是空间上)。</li>
+<li>如果虚拟 DOM 大量更改，这是合适的。但是单一的，频繁的更新的话，虚拟 DOM 将会花费更多的时间处理计算的工作。所以，如果你有一个DOM 节点相对较少页面，用虚拟 DOM，它实际上有可能会更慢。但对于大多数单页面应用，这应该都会更快。</li>
+</ul>
+<h3><span id="react中-为什么使用合成事件">react中 为什么使用合成事件</span></h3><ul>
+<li>提供<code>统一的 API</code>，<code>抹平</code>各大浏览器差异</li>
+<li>合成事件 所有事件绑定在 <code>React Root Element</code> 进行事件委托</li>
+</ul>
+<h3><span id="setstate到底是同步还是异步可能会出个解读题">setState到底是同步还是异步，（可能会出个解读题）</span></h3><pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token punctuation">)</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"3"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//2</span>
+        <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"4"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//3</span>
+        <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="reactx2fvue-中受控组件与不受控组件的区别"></span></h3><ul>
+<li>受控组件的状态由开发者维护</li>
+<li>非受控组件的状态由组件自身维护（不受开发者控制）</li>
+</ul>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token comment" spellcheck="true">// 受控组件</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Input</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;x&amp;#125;</span> <span class="token attr-name">onChange</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;fn&amp;#125;/</span><span class="token punctuation">></span></span>
+
+<span class="token comment" spellcheck="true">// 非受控</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Input</span> <span class="token attr-name">defaultValue</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;x&amp;#125;</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;input&amp;#125;/</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2021/08/22/frontend-question-react/%20nostalgia%20React"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2021/08/22/frontend-question-other/" title="算法,设计模式"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: 算法,设计模式</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2021/08/22/frontend-question-ts/" title="TypeScript">下一篇: TypeScript&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

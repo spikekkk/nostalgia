@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>Markdown语法指南 · nostalgia</title><meta name="description" content="Markdown语法指南vuepress内置语法博客脚本内置语法
+
+[首页](../README.md)  
+[配置参考](../reference/config.md)  
+[快速上手](./getting-started.md)  
+
+[指南](/zh/guide/README.md)  
+[配"><meta name="og:description" content="Markdown语法指南vuepress内置语法博客脚本内置语法
+
+[首页](../README.md)  
+[配置参考](../reference/config.md)  
+[快速上手](./getting-started.md)  
+
+[指南](/zh/guide/README.md)  
+[配"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="Markdown语法指南"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>Markdown语法指南</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2023-11-26</span></p><p class="post-abstract"><h1><span id="markdown语法指南">Markdown语法指南</span></h1><h2><span id="vuepress内置语法">vuepress内置语法</span></h2><p><a target="_blank" rel="noopener" href="https://v2.vuepress.vuejs.org/zh/guide/markdown.html#%E8%AF%AD%E6%B3%95%E6%89%A9%E5%B1%95">博客脚本内置语法</a></p>
+<pre class="line-numbers language-MD"><code class="language-MD"><!-- 相对路径 -->
+[首页](../README.md)  
+[配置参考](../reference/config.md)  
+[快速上手](./getting-started.md)  
+<!-- 绝对路径 -->
+[指南](/zh/guide/README.md)  
+[配置参考 > markdown.links](/zh/reference/config.md#links)  
+<!-- URL -->
+[GitHub](https://github.com) 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>行高亮<br>你可以在代码块添加行数范围标记，来为对应代码行进行高亮：</p>
+<p>输入</p>
+<pre class="line-numbers language-ts{1,6-8}"><code class="language-ts{1,6-8}">import { defaultTheme, defineUserConfig } from 'vuepress'
+
+export default defineUserConfig({
+  title: '你好， VuePress',
+
+  theme: defaultTheme({
+    logo: 'https://vuejs.org/images/logo.png',
+  }),
+})
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>行数范围标记的例子：</p>
+<p>行数范围： {5-8}<br>多个单行： {4,7,9}<br>组合： {4,7-13,16,23-27,40}</p>
+<p>导入代码块<br>你可以使用下面的语法，从文件中导入代码块：</p>
+<!-- 最简单的语法 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果你只想导入这个文件的一部分：</p>
+<!-- 仅导入第 1 行至第 10 行 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code{1-10}](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>代码语言会根据文件扩展名进行推断，但我们建议你显式指定：</p>
+<!-- 指定代码语言 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code js](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>实际上，[] 内的第二部分会被作为代码块标记来处理，因此在上面 代码块 章节中提到的语法在这里都可以支持：</p>
+<!-- 行高亮 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code js{2,4-5}](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>导入代码块<br>你可以使用下面的语法，从文件中导入代码块：</p>
+<!-- 最简单的语法 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果你只想导入这个文件的一部分：</p>
+<!-- 仅导入第 1 行至第 10 行 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code{1-10}](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>代码语言会根据文件扩展名进行推断，但我们建议你显式指定：</p>
+<!-- 指定代码语言 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code js](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>实际上，[] 内的第二部分会被作为代码块标记来处理，因此在上面 代码块 章节中提到的语法在这里都可以支持：</p>
+<!-- 行高亮 -->
+<pre class="line-numbers language-md"><code class="language-md">@[code js{2,4-5}](../foo.js)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2><span id="markdown-基本语法">Markdown 基本语法</span></h2><p><a target="_blank" rel="noopener" href="https://markdown.com.cn/basic-syntax/">Markdown 基本语法</a></p>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2023/11/26/other-markdownGuide/%20nostalgia%20Markdown语法指南"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2024/07/24/frontend-sse/" title="使用SSE 流式传输"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: 使用SSE 流式传输</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2023/11/26/tips-git-action/" title="Github Actions 部署方法记录">下一篇: Github Actions 部署方法记录&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>Vue · nostalgia</title><meta name="description" content="Vue组件通信import &amp;amp;#123; useState &amp;amp;#125; from &quot;react&quot;;
+import &quot;./styles.css&quot;;
+
+function One(&amp;amp;#123; count, setCount &amp;amp;#125;) &amp;amp;#123;
+  re"><meta name="og:description" content="Vue组件通信import &amp;amp;#123; useState &amp;amp;#125; from &quot;react&quot;;
+import &quot;./styles.css&quot;;
+
+function One(&amp;amp;#123; count, setCount &amp;amp;#125;) &amp;amp;#123;
+  re"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="Vue"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>Vue</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2021-08-22</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/frontend/" title="frontend">frontend</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/vue/" title="vue">vue</a><span>&nbsp;</span></span></p><p class="post-abstract"><h2><span id="vue">Vue</span></h2><h3><span id="组件通信">组件通信</span></h3><pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token entity" title="&#123;">&amp;#123;</span> useState <span class="token entity" title="&#125;">&amp;#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">"./styles.css"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">One</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">,</span> setCount <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div style<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token entity" title="&#123;">&amp;#123;</span> border<span class="token punctuation">:</span> <span class="token string">"1px solid red"</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token entity" title="&#125;">&amp;#125;</span><span class="token operator">></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Conponent One<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+      <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setCount</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token entity" title="&#125;">&amp;#125;</span><span class="token operator">></span>Click<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token entity" title="&#123;">&amp;#123;</span>count<span class="token entity" title="&#125;">&amp;#125;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">Two</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">,</span> setCount <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div style<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token entity" title="&#123;">&amp;#123;</span> border<span class="token punctuation">:</span> <span class="token string">"1px solid red"</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token entity" title="&#125;">&amp;#125;</span><span class="token operator">></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Conponent Two<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+      <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setCount</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token entity" title="&#125;">&amp;#125;</span><span class="token operator">></span>Click<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token entity" title="&#123;">&amp;#123;</span>count<span class="token entity" title="&#125;">&amp;#125;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>count<span class="token punctuation">,</span> setCount<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">className</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>App<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token operator">&lt;</span>One count<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span>count<span class="token entity" title="&#125;">&amp;#125;</span> setCount<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setCount</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token entity" title="&#125;">&amp;#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Two count<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span>count<span class="token entity" title="&#125;">&amp;#125;</span> setCount<span class="token operator">=</span><span class="token entity" title="&#123;">&amp;#123;</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setCount</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token entity" title="&#125;">&amp;#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="数据响应式原理-vue2-amp-vue3">数据响应式原理 vue2 &amp; vue3</span></h3><p><strong>VUE2</strong></p>
+<ul>
+<li>核心API-Object.defineProperty</li>
+<li>如何实现响应式</li>
+<li>Object.defineProperty的一些缺点(VUE3.0启用 Proxy)<ul>
+<li>Proxy存在兼容性问题<ul>
+<li>且无法polyfill</li>
+<li>IE11等无法使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token comment" spellcheck="true">// 触发更新视图</span>
+<span class="token keyword">function</span> <span class="token function">updateView</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'视图更新'</span><span class="token punctuation">)</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 重新定义数组原型</span>
+<span class="token keyword">const</span> oldArrayProperty <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype
+<span class="token comment" spellcheck="true">// Object.create 方法  </span>
+<span class="token comment" spellcheck="true">// --->创建新对象，原型指向 oldArrayProperty ，再扩展新的方法不会影响原型</span>
+<span class="token keyword">const</span> arrProto <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>oldArrayProperty<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">[</span><span class="token string">'push'</span><span class="token punctuation">,</span> <span class="token string">'pop'</span><span class="token punctuation">,</span> <span class="token string">'shift'</span><span class="token punctuation">,</span> <span class="token string">'unshift'</span><span class="token punctuation">,</span> <span class="token string">'splice'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>methodName <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    arrProto<span class="token punctuation">[</span>methodName<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token function">updateView</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 触发视图更新</span>
+        oldArrayProperty<span class="token punctuation">[</span>methodName<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token operator">...</span>arguments<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">// Array.prototype.push.call(this, ...arguments)</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 重新定义属性，监听起来</span>
+<span class="token keyword">function</span> <span class="token function">defineReactive</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token comment" spellcheck="true">// 深度监听</span>
+    <span class="token function">observer</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 核心 API</span>
+    Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            <span class="token keyword">return</span> value
+        <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+        <span class="token keyword">set</span><span class="token punctuation">(</span>newValue<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>newValue <span class="token operator">!==</span> value<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+                <span class="token comment" spellcheck="true">// 深度监听</span>
+                <span class="token function">observer</span><span class="token punctuation">(</span>newValue<span class="token punctuation">)</span>
+
+                <span class="token comment" spellcheck="true">// 设置新值</span>
+                <span class="token comment" spellcheck="true">// 注意，value 一直在闭包中，此处设置完之后，再 get 时也是会获取最新的值</span>
+                value <span class="token operator">=</span> newValue
+
+                <span class="token comment" spellcheck="true">// 触发更新视图</span>
+                <span class="token function">updateView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token entity" title="&#125;">&amp;#125;</span>
+        <span class="token entity" title="&#125;">&amp;#125;</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 监听对象属性</span>
+<span class="token keyword">function</span> <span class="token function">observer</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> target <span class="token operator">!==</span> <span class="token string">'object'</span> <span class="token operator">||</span> target <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token comment" spellcheck="true">// 不是对象或数组</span>
+        <span class="token keyword">return</span> target
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+
+    <span class="token comment" spellcheck="true">// 1.0 不可以这样处理 array 的方法  --->污染全局的 Array 原型</span>
+    <span class="token comment" spellcheck="true">// Array.prototype.push = function () &amp;#123;</span>
+    <span class="token comment" spellcheck="true">//     updateView()</span>
+    <span class="token comment" spellcheck="true">//     ...</span>
+    <span class="token comment" spellcheck="true">// &amp;#125;</span>
+		<span class="token comment" spellcheck="true">// 2.0 只能通过copy代理一份</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        target<span class="token punctuation">.</span>__proto__ <span class="token operator">=</span> arrProto
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+
+    <span class="token comment" spellcheck="true">// 重新定义各个属性（for in 也可以遍历数组）</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> target<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token function">defineReactive</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> target<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 准备数据</span>
+<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    name<span class="token punctuation">:</span> <span class="token string">'zhangsan'</span><span class="token punctuation">,</span>
+    age<span class="token punctuation">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+    info<span class="token punctuation">:</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        address<span class="token punctuation">:</span> <span class="token string">'北京'</span> <span class="token comment" spellcheck="true">// 需要深度监听</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+    nums<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 监听数据</span>
+<span class="token function">observer</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 测试</span>
+<span class="token comment" spellcheck="true">// data.name = 'lisi'</span>
+<span class="token comment" spellcheck="true">// data.age = 21</span>
+<span class="token comment" spellcheck="true">// // console.log('age', data.age)</span>
+<span class="token comment" spellcheck="true">// data.x = '100' // 新增属性，监听不到 —— 所以有 Vue.set</span>
+<span class="token comment" spellcheck="true">// delete data.name // 删除属性，监听不到 —— 所有已 Vue.delete</span>
+<span class="token comment" spellcheck="true">// data.info.address = '上海' // 深度监听</span>
+data<span class="token punctuation">.</span>nums<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 监听数组</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>几个缺点<ul>
+<li>Object.defineProperty缺点<ul>
+<li>深度监听,需要<code>递归到底</code>,一次性计算量大</li>
+<li>无法监听<code>新增/删除</code>属性(需使用 Vue.<code>set</code>Vue.<code>delete</code>)</li>
+<li>无法<code>监听</code>原生<code>数组</code>,需要特殊处理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>VUE3—<strong>Proxy响应式</strong></p>
+<ul>
+<li>vue3如何用proxy实现响应式<ul>
+<li><code>深度监听</code>通过<code>get</code>来获取—只有触发get才会又,触发其他的方法set,deleteProperty不会<ul>
+<li>你获取到那一层,才会触发那一层的响应式(递归)<ul>
+<li>obj.a  只到a,obj.a.b 不会触发 obj.a.b.c</li>
+</ul>
+</li>
+<li>不像<code>definePropery</code>的深度监听,一开始就已经深度递归了.一次性递归所有层级</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>proxy的缺点<ul>
+<li>无法兼容IE,无法polyfill<br>  <strong>Polyfill 是一块代码（通常是 Web 上的 JavaScript），用来为旧浏览器提供它没有原生支持的较新的功能</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token comment" spellcheck="true">// 创建一个响应式对象的函数</span>
+<span class="token keyword">function</span> <span class="token function">reactive</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token comment" spellcheck="true">// 定义处理程序对象，用于拦截对目标对象的操作</span>
+    <span class="token keyword">const</span> handlers <span class="token operator">=</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token comment" spellcheck="true">// 当访问对象属性时触发此方法</span>
+        <span class="token keyword">get</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>obj<span class="token punctuation">,</span> prop<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`获取 $&amp;#123;prop&amp;#125; 的值`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 打印获取的属性名</span>
+            <span class="token comment" spellcheck="true">// 使用 Reflect.get 来执行默认的属性获取操作，并返回结果</span>
+            <span class="token keyword">return</span> Reflect<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> prop<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// 当设置对象属性时触发此方法</span>
+        <span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>obj<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`设置 $&amp;#123;prop&amp;#125; 的新值为 $&amp;#123;value&amp;#125;`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 打印设置的属性名和新值</span>
+            <span class="token comment" spellcheck="true">// 使用 Reflect.set 来执行默认的属性设置操作，并返回操作是否成功的结果</span>
+            <span class="token keyword">const</span> result <span class="token operator">=</span> Reflect<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">trigger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 触发副作用函数重新运行</span>
+            <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+        <span class="token entity" title="&#125;">&amp;#125;</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 返回一个带有自定义处理程序的新代理对象</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Proxy</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> handlers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 触发副作用函数</span>
+<span class="token keyword">let</span> activeEffect<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 存储当前活跃的副作用函数</span>
+
+<span class="token comment" spellcheck="true">// 注册并立即执行副作用函数</span>
+<span class="token keyword">function</span> <span class="token function">effect</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    activeEffect <span class="token operator">=</span> fn<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 设置当前活跃的副作用函数</span>
+    <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 立即执行副作用函数</span>
+    activeEffect <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 清除当前活跃的副作用函数</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 当数据改变时调用此函数以触发副作用</span>
+<span class="token keyword">function</span> <span class="token function">trigger</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>activeEffect<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token comment" spellcheck="true">// 如果存在当前活跃的副作用函数，则重新执行它</span>
+        <span class="token function">activeEffect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span>
+
+<span class="token comment" spellcheck="true">// 使用示例</span>
+<span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> count<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 创建一个响应式对象</span>
+
+<span class="token function">effect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token comment" spellcheck="true">// 注册一个副作用函数，该函数依赖于 state.count</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`count 的值是：$&amp;#123;state.count&amp;#125;`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 每当 state.count 变化时，这个函数会被重新执行</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 修改状态，这将触发副作用函数重新运行</span>
+state<span class="token punctuation">.</span>count<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 这里会打印 "设置 count 的新值为 1" 和 "count 的值是：1"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>reactive 函数:</li>
+<li></li>
+</ul>
+<p>接收一个普通对象 target 并返回一个通过 Proxy 包装过的响应式对象。</p>
+<ul>
+<li>handlers 对象包含两个关键方法：</li>
+</ul>
+<p>get 和 set，它们分别在访问和修改对象属性时被触发。<br>Reflect.get 和 Reflect.set 方法用来执行默认的对象操作行为，同时允许我们拦截这些操作并添加额外逻辑（如日志记录）。</p>
+<ul>
+<li>effect 函数:</li>
+</ul>
+<p>接收一个副作用函数 fn 并立即执行它。<br>在执行副作用函数之前，先将其存储在 activeEffect 变量中，这样可以在数据变化时重新执行该副作用函数。<br>副作用函数通常包含一些依赖于响应式数据的操作，比如读取 state.count。</p>
+<ul>
+<li>trigger 函数:</li>
+</ul>
+<p>在 set 处理器中调用，用于触发副作用函数重新运行。<br>如果当前有活跃的副作用函数（即 activeEffect 不为 null），则重新执行该副作用函数。</p>
+<p>创建了一个响应式对象 state，其中包含一个属性 count。<br>使用 effect 注册了一个副作用函数，该函数依赖于 state.count 的值。<br>每次修改 state.count 的值时，都会触发副作用函数重新执行，从而实现响应式更新。</p>
+<h3><span id="vue2-amp-vue3-区别">Vue2 &amp; Vue3 区别</span></h3><h3><span id="options-api生命周期-gt类似vue2的生命周期">options API生命周期 —&gt;类似vue2的生命周期</span></h3><ul>
+<li>销毁生命周期名称修改<ul>
+<li>beforeDestroy 改为 <code>beforeUnmout</code></li>
+<li>destroy 改为 <code>unmouted</code></li>
+</ul>
+</li>
+<li>其余沿用vue2生命周期不变<ul>
+<li>在vue2中仍然可以用使用原有的date,methods,props等方法不变</li>
+</ul>
+</li>
+</ul>
+<h3><span id="setup中的新生命周期定义">setUp中的新生命周期定义</span></h3><p><code>setup</code>等同于<code>beforeCreate</code> &amp; <code>Create</code></p>
+<p>与老的几乎一致,同时新老都可以使用</p>
+<h3><span id="虚拟dom-diff">虚拟dom ， diff</span></h3><ul>
+<li>diff即对比的意思,是一个广泛的概念,如linux diff命令,git diff等</li>
+<li>两个js对象 也可以做diff ,如 <code>https://github.com/cujojs/jiff</code></li>
+<li>两颗树做diff,如 这里的 vdom  diff</li>
+</ul>
+<h3><span id="vue-和-react-的区别">Vue 和 react 的区别</span></h3><p>从思想、生态、语法、数据、通信、diff等角度自己总结一下吧。</p>
+<h3><span id="请阐述一下-v-model-的原理">请阐述一下 <code>v-model</code> 的原理</span></h3><p>v-model 本质上不过是语法糖，可以用 v-model 指令在表单 <code>input、textarea</code>及 <code>select</code> 元素上创建双向数据绑定。它会根据控件类型自动选取正确的方法来更新元素。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。你应该通过 JavaScript 在组件的 data 选项中声明初始值。<br>v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：</p>
+<ul>
+<li>text 和 textarea 元素使用 value 属性和 input 事件；</li>
+<li>checkbox 和 radio 使用 checked 属性和 change 事件；</li>
+<li>select 字段将 value 作为 prop 并将 change 作为事件。</li>
+</ul>
+<p>原理:</p>
+<p>v-model只不过是一个语法糖而已,真正的实现靠的还是</p>
+<ul>
+<li>v-bind:绑定响应式数据</li>
+<li>触发oninput 事件并传递数据</li>
+</ul>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name"><span class="token namespace">v-bind:</span>value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>searchText<span class="token punctuation">"</span></span>
+<span class="token attr-name"><span class="token namespace">v-on:</span>input</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>searchText<span class="token punctuation">=</span>$event.target.value<span class="token punctuation">"</span>/</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3><span id="在-reactx2fvue-中数组是否可以以在数组中的次序为-key">在 react&#x2F;vue 中数组是否可以以在数组中的次序为 key</span></h3><p>不可，key应为唯一标示，在数组变更时插入或删除后，index无法确保<code>始终</code>指向对应的<code>序列</code></p>
+<h3><span id="vue-生命周期amp父子组件生命周期">vue 生命周期&amp;父子组件生命周期</span></h3><p>执行顺序：父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载，</p>
+<p>即</p>
+<pre class="line-numbers language-jsx"><code class="language-jsx">父beforeCreate<span class="token operator">-</span><span class="token operator">></span> 父create <span class="token operator">-</span><span class="token operator">></span> 子beforeCreate<span class="token operator">-</span><span class="token operator">></span> 子created <span class="token operator">-</span><span class="token operator">></span> 子mounted <span class="token operator">-</span><span class="token operator">></span> 父mounted
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>子组件挂载完成后，父组件还未挂载。所以组件数据回显的时候，在父组件<code>mounted</code>中获取api的数据，子组件的<code>mounted</code>是拿不到的。</p>
+<h2><span id="补充单一组件钩子执行顺序"><strong>补充单一组件钩子执行顺序</strong></span></h2><blockquote>
+<p>activated deactivated&#x3D;⇒ keep-alive的生命周期</p>
+</blockquote>
+<ol>
+<li>beforeCreate</li>
+<li>created</li>
+<li>beforeMount</li>
+<li>mounted</li>
+<li>beforeUpdate</li>
+<li>updated</li>
+<li>activated</li>
+<li>deactivated</li>
+<li>beforeDestroy</li>
+<li>destroyed</li>
+<li>errorCaptured</li>
+</ol>
+<h3><span id="computed和methods有什么区别">computed和methods有什么区别</span></h3><ul>
+<li>computed有缓存—返回计算的值给到视图View<ul>
+<li>data<code>不变</code>则<code>不会</code>重新计算</li>
+</ul>
+</li>
+<li>watch监听引用类型,拿不到oldVal<ul>
+<li>array,object,function引用类型，拿不到 oldVal 。</li>
+<li>因为指针相同，此时已经指向了新的 val</li>
+</ul>
+</li>
+</ul>
+<h3><span id="请阐述keep-alive组件的作用和原理">请阐述keep-alive组件的作用和原理</span></h3><h3><span id="vuex">VUEX</span></h3><ul>
+<li>state</li>
+<li>getters</li>
+<li>action<br>异步操作</li>
+<li>mutation<br>原子级别的多个操作(同步)</li>
+</ul>
+<p>在组件中使用</p>
+<ul>
+<li>dispatch</li>
+<li>commit</li>
+<li>mapState</li>
+<li>mapGetters</li>
+<li>mapActions</li>
+<li>mapMutations</li>
+</ul>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2021/08/22/frontend-question-vue/%20nostalgia%20Vue"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2021/08/22/frontend-question-ts/" title="TypeScript"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: TypeScript</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2021/08/22/frontend-question-http/" title="Http">下一篇: Http&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

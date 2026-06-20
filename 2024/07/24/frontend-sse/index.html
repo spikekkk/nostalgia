@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>使用SSE 流式传输 · nostalgia</title><meta name="description" content="为什么用 SSE趁着 ai 的风，项目需要启动一个 ai 智能助手，了解了下，当前环境里做 ai 助手的主要请求方式就是流式请求，相较于之前做过的 WebSocket 项目而言，这次又是一个好玩儿的技术点，刚好体验下如何在搭配后端 agent 能力下做出令人满意的营销智能助手
+什么是 SSESSE "><meta name="og:description" content="为什么用 SSE趁着 ai 的风，项目需要启动一个 ai 智能助手，了解了下，当前环境里做 ai 助手的主要请求方式就是流式请求，相较于之前做过的 WebSocket 项目而言，这次又是一个好玩儿的技术点，刚好体验下如何在搭配后端 agent 能力下做出令人满意的营销智能助手
+什么是 SSESSE "><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="使用SSE 流式传输"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>使用SSE 流式传输</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2024-07-24</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/frontend/" title="frontend">frontend</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/tips/" title="tips">tips</a><span>&nbsp;</span></span></p><p class="post-abstract"><h2><span id="为什么用-sse">为什么用 SSE</span></h2><p>趁着 ai 的风，项目需要启动一个 ai 智能助手，了解了下，当前环境里做 ai 助手的主要请求方式就是流式请求，相较于之前做过的 WebSocket 项目而言，这次又是一个好玩儿的技术点，刚好体验下如何在搭配后端 agent 能力下做出令人满意的营销智能助手</p>
+<h2><span id="什么是-sse">什么是 SSE</span></h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events">SSE 全称 Server-Sent Events (SSE)</a></p>
+<p>是一种允许服务器主动向客户端浏览器推送数据的技术。<br>它基于 HTTP 协议，但与传统的 HTTP 请求-响应模式不同，SSE 允许服务器在建立连接后，通过一个持久的连接不断地向客户端发送消息。<br>听起来跟 WebSocket 有点像是吧？</p>
+<h2><span id="工作原理">工作原理</span></h2><p>当然，以下是经过简化和优化后的描述</p>
+<h3><span id="建立连接">建立连接</span></h3><p>客户端通过普通 HTTP 请求订阅服务器的 SSE 端点。服务器响应并保持连接打开，以维持持久通信。</p>
+<h3><span id="服务器推送消息">服务器推送消息</span></h3><p>当服务器有新数据时，通过该持久连接向客户端发送事件。每个事件包含遵循特定格式的文本数据流。</p>
+<h3><span id="客户端接收消息">客户端接收消息</span></h3><p>客户端监听来自服务器的事件，并在接收到新数据时触发相应的处理程序。</p>
+<h3><span id="连接管理">连接管理</span></h3><p>若连接中断，客户端会自动尝试重新连接，确保通信的连续性。</p>
+<h2><span id="在我们项目中的运用">在我们项目中的运用</span></h2><p>当前我们项目当前仅需要传输 string,这一点刚好契合 SSE 的特征，</p>
+<p><code>SSE 只支持文本格式的数据流</code></p>
+<h3><span id="请求头">请求头</span></h3><pre><code>Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+</code></pre>
+<h3><span id="数据格式与编码">数据格式与编码</span></h3><p>事件流格式：SSE 使用特定的文本格式进行通信。<br>每条消息应以 data: 开头，多个字段间用换行符分隔。<br>data: 消息内容</p>
+<p>字符编码：确保发送的消息是 UTF-8 编码，这是 SSE 的默认编码方式<br>​ 每次推送，可由多个消息组成，每个消息之间以空行分隔（即最后一个字段以</p>
+<p> 结尾）。需要使用正则特殊处理一下</p>
+<h2><span id="第三方流式请求插件推荐">第三方流式请求插件推荐</span></h2><h3><span id="useeventsource">useEventSource</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/vueuse/vueuse/blob/main/packages/core/useEventSource/index.md">https://github.com/vueuse/vueuse/blob/main/packages/core/useEventSource/index.md</a></p>
+<h3><span id="microsoftx2ffetch-event-source">microsoft&#x2F;fetch-event-source</span></h3><p>@microsoft&#x2F;fetch-event-source，是微软开发的一个库，用于通过 Fetch API 实现 SSE 的流式数据传输。它封装了请求发送、消息接收和连接恢复的逻辑，非常适合流式数据的处理。<br>这里采用的是这个后期改进了下。<br>主要参数如下</p>
+<ul>
+<li>method: HTTP 方法，通常为  POST。</li>
+<li>headers: 请求头信息，通常需要指定  Content-Type  为  application&#x2F;json。</li>
+<li>body: 请求体内容，可以根据需求传递给后端。</li>
+<li>onmessage: 处理流式消息的回调函数，每当服务器发送一条消息时会调用。</li>
+<li>onclose: 服务器关闭连接时的回调。</li>
+<li>onerror: 出现错误时的回调。</li>
+</ul>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token entity" title="&#123;">&amp;#123;</span> FC<span class="token punctuation">,</span> useEffect<span class="token punctuation">,</span> useState <span class="token entity" title="&#125;">&amp;#125;</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token entity" title="&#123;">&amp;#123;</span> fetchEventSource <span class="token entity" title="&#125;">&amp;#125;</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fetch-event-source'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> App <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>data<span class="token punctuation">,</span> setData<span class="token punctuation">]</span> <span class="token operator">=</span> useState<span class="token operator">&lt;</span>any<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> ssePost <span class="token operator">=</span> <span class="token punctuation">(</span>msg<span class="token punctuation">:</span> string<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token entity" title="&#123;">&amp;#123;</span>
+    <span class="token function">fetchEventSource</span><span class="token punctuation">(</span><span class="token string">'/api/sse'</span><span class="token punctuation">,</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+      method<span class="token punctuation">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+      headers<span class="token punctuation">:</span> <span class="token entity" title="&#123;">&amp;#123;</span> <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span> <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token entity" title="&#123;">&amp;#123;</span> query<span class="token punctuation">:</span> msg <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+
+      <span class="token function">onmessage</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        <span class="token comment" spellcheck="true">// 收到的流式数据更新数据</span>
+        <span class="token function">setData</span><span class="token punctuation">(</span>prevData <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token operator">...</span>prevData<span class="token punctuation">,</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+
+      <span class="token function">onerror</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Error:'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+
+      <span class="token function">onclose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token entity" title="&#123;">&amp;#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'关闭连接'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">,</span>
+    <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+      <span class="token entity" title="&#123;">&amp;#123;</span>data<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span>&amp;#123;item.msg&amp;#125;</span><span class="token punctuation">></span></span><span class="token entity" title="&#123;">&amp;#123;</span>item<span class="token punctuation">.</span>msg<span class="token entity" title="&#125;">&amp;#125;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token entity" title="&#125;">&amp;#125;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token entity" title="&#125;">&amp;#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> App<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2><span id="ai-智能助手的坑">ai 智能助手的坑</span></h2><h3><span id="打字机效果">打字机效果</span></h3><p>当然还有打字机效果，这个前端做也行，后端处理也可以，关键在于一秒吐出 2 到 5 个字符。<br>前端实现有个难点在于光标的闪烁问题。<br>打字机光标效果的实现思路两种：</p>
+<ul>
+<li>递归查找当前 DOM 树中的最后一个节点内容不为空的文本叶子节点，然后追加一个闪烁的光标 DOM，依赖 CSS 选择器，通过:last-child:after 子代选择器和伪类选择器锁定位置，其实也是递归查最后一个非空叶子节点。</li>
+<li>采用第三方库<a target="_blank" rel="noopener" href="https://typeitjs.com/">https://typeitjs.com/</a></li>
+</ul>
+<h3><span id="处理后端返回字段">处理后端返回字段</span></h3><h4><span id="多个图表信息">多个图表信息</span></h4><p>因为当前存在客户信息的情况下，有性别，城市，用户画像等 tab<br>且每种信息需要使用不同的 Chart 图表</p>
+<ul>
+<li>性别 使用 饼图</li>
+<li>城市占比 使用 柱状图</li>
+<li>用户画像 使用 折线图<br>这就需要在处理接口返回 data 时，让后端返回不同的 dataType<br>一次返回一条 tab 信息，前端采用 key:value 的形式拼接信息后在放到页面展示</li>
+</ul>
+<p>在页面端使用切换不同的类型图表来展示就够了<br>也就是意味着，流式请求需要每次只返回一条信息包裹不同 chart 的信息，这里需要前端单独处理。<br>而非我们常规请求返回也给大 json，可以从里面取到对应的 key–value</p>
+<pre><code>// 常规 response
+&#123;
+  age: [
+    &#123; xvalue: &#39;12&#39;, yvalue: &#39;boy&#39; &#125;
+  ],
+  city: [
+    &#123; xvalue: &#39;12&#39;, yvalue: &#39;北京&#39; &#125;,
+    &#123; xvalue: &#39;27&#39;, yvalue: &#39;南京&#39; &#125;
+  ]
+&#125;
+</code></pre>
+<p>因为流式请求相当于是对常规后端response的jsonData信息进行一个<code>Object.entry</code>操作<code>forEach</code>行为，需要设定一个 infoArr 来进行承接。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> currentDataListItem <span class="token operator">=</span> <span class="token string">'[&amp;#123;xvalue: "12", yvalue: "boy"&amp;#125;]'</span>
+
+<span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token keyword">case</span> <span class="token string">'age'</span><span class="token punctuation">:</span>
+    infoArr<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">break</span>
+  <span class="token keyword">case</span> <span class="token string">'city'</span><span class="token punctuation">:</span>
+    infoArr<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">break</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>随后在页面 client 端，接受到当前的<code>dataItem</code>，对不同 type 下的 chart 信息进行二次组合，放到对应的 chart图表中进行展示即可。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 模拟从后端接收的数据流</span>
+<span class="token keyword">const</span> mockData <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> dataType<span class="token punctuation">:</span> <span class="token string">'gender'</span><span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> male<span class="token punctuation">:</span> <span class="token number">60</span><span class="token punctuation">,</span> female<span class="token punctuation">:</span> <span class="token number">40</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> dataType<span class="token punctuation">:</span> <span class="token string">'city'</span><span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> NewYork<span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">,</span> Beijing<span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">,</span> London<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> dataType<span class="token punctuation">:</span> <span class="token string">'userProfile'</span><span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> Jan<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span> Feb<span class="token punctuation">:</span> <span class="token number">20</span><span class="token punctuation">,</span> Mar<span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">,</span> Apr<span class="token punctuation">:</span> <span class="token number">40</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 处理返回数据</span>
+<span class="token keyword">function</span> <span class="token function">processData</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>dataType<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token string">'gender'</span><span class="token punctuation">:</span>
+      <span class="token function">renderPieChart</span><span class="token punctuation">(</span><span class="token string">'genderChart'</span><span class="token punctuation">,</span> data<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+      <span class="token keyword">break</span>
+    <span class="token keyword">case</span> <span class="token string">'city'</span><span class="token punctuation">:</span>
+      <span class="token function">renderBarChart</span><span class="token punctuation">(</span><span class="token string">'cityChart'</span><span class="token punctuation">,</span> data<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+      <span class="token keyword">break</span>
+    <span class="token keyword">case</span> <span class="token string">'userProfile'</span><span class="token punctuation">:</span>
+      <span class="token function">renderLineChart</span><span class="token punctuation">(</span><span class="token string">'userProfileChart'</span><span class="token punctuation">,</span> data<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+      <span class="token keyword">break</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未知的数据类型'</span><span class="token punctuation">)</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 模拟接口返回数据</span>
+mockData<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token function">processData</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-vue"><code class="language-vue"><template>
+  <div>
+    <h3><span id="接收到的消息">接收到的消息:</span></h3>
+    <ul>
+      <li v-for="(message, index) in messages" :key="index">&#123;&#123; message &#125;&#125;</li>
+    </ul>
+    <button @click="sendMessage">发送消息</button>
+  </div>
+</template>
+
+<script setup>
+import &#123; ref, onMounted, onBeforeUnmount &#125; from 'vue'
+import myAxios from '@/plugins/myAxios'
+
+const messages = ref([])
+let eventSource = null
+
+onMounted(() => &#123;
+  eventSource = new EventSource('http://localhost:8080/sse/create')
+  eventSource.addEventListener('sse-message', (event) => &#123;
+    console.log('收到消息:', event.data)
+    messages.value.push(event.data)
+  &#125;)
+  eventSource.onerror = (error) => &#123;
+    console.error('SSE 连接出错:', error)
+    eventSource.close()
+  &#125;
+&#125;)
+
+onBeforeUnmount(() => &#123;
+  if (eventSource) &#123;
+    eventSource.close()
+  &#125;
+&#125;)
+
+const sendMessage = async () => &#123;
+  await myAxios.post('/sse/send')
+&#125;
+</script>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="markdown-格式文本展示">markdown 格式文本展示</span></h3><p>需要采用当前现有的 markdown 插件展示即可，<br>但在项目实际操作中，在打字机效果加载中，<br>会出现</p>
+<ul>
+<li>开头第一个字放大效果</li>
+<li>或者 p 标签下间距突然放大的效果</li>
+</ul>
+<p>需要特殊处理css的<code>!important</code>等级。</p>
+<h3><span id="接口的报错处理">接口的报错处理</span></h3><p>在项目中使用 <code>fetchEventSource</code>进行 SSE 通信时，遇到了以往使用常规拦截器，进行 get和post请求报错以外情况的报错。</p>
+<p>常规请求中，<br>拦截器只需要判断</p>
+<ul>
+<li>后端约定的success是否成功，</li>
+<li>或status的状态码是非200状态<br>而在sse的请求中，对于拦截的效果一开始没有考虑周全，按照常规的方法进行拦截发现不太够。<ol>
+<li>仅仅处理了response报错拦截50x,40x可以处理</li>
+<li>存在服务中断，没有status的情况</li>
+<li>存在链接时间超时问题</li>
+<li>返回content直接包含errorCode</li>
+<li>判断content-type一旦不在只<code>Content-Type: text/event-stream</code> 也是接口出错</li>
+</ol>
+</li>
+</ul>
+<h3><span id="错误处理">错误处理</span></h3><ol>
+<li><p><strong>连接失败或中断</strong>：<br>当与服务器的连接由于网络问题或其他原因断开时，<code>fetchEventSource</code> 提供了 <code>onerror</code> 回调来捕获这类错误。在此回调中实现重试逻辑，或者根据需要终止重试 。</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> fetchEventSource <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fetch-event-source"</span>
+
+<span class="token function">fetchEventSource</span><span class="token punctuation">(</span><span class="token string">"/api/sse"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token function">onerror</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Error:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err <span class="token keyword">instanceof</span> <span class="token class-name">Response</span> <span class="token operator">&amp;&amp;</span> err<span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token number">503</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 可能是暂时性的服务不可用，可以设置重试间隔</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Retriable error"</span><span class="token punctuation">)</span>
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 非重试性错误，停止重试</span>
+            <span class="token keyword">throw</span> err
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// 其他配置...</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>HTTP 响应错误</strong>：<br>如果后端返回了一个非 2xx 状态码，可以在 <code>onopen</code> 回调中检查 <code>response</code> 对象的状态码</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token function">onopen</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Server returned $&amp;#123;response.status&amp;#125; status`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>消息解析错误</strong>：<br>在 <code>onmessage</code> 回调中，如果接收到的消息格式不正确，可能导致 JSON 解析失败</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token function">onmessage</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> data <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Received message:'</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Failed to parse message:'</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h3><span id="示例代码">示例代码</span></h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> useEffect <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">"react"</span>
+<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> fetchEventSource <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fetch-event-source"</span>
+
+<span class="token keyword">const</span> SseComponent <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token keyword">const</span> controller <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbortController</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token function">fetchEventSource</span><span class="token punctuation">(</span><span class="token string">"/api/sse"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            signal<span class="token punctuation">:</span> controller<span class="token punctuation">.</span>signal<span class="token punctuation">,</span>
+            <span class="token function">onopen</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Server returned $&amp;#123;response.status&amp;#125; status`</span></span><span class="token punctuation">)</span>
+                <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+            <span class="token function">onmessage</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                <span class="token keyword">try</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                    <span class="token keyword">const</span> data <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+                    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Received message:"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span>
+                <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Failed to parse message:"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span>
+                <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+            <span class="token function">onerror</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Error:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>err <span class="token keyword">instanceof</span> <span class="token class-name">Response</span> <span class="token operator">&amp;&amp;</span> err<span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token number">503</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                    <span class="token comment" spellcheck="true">// 设置重试间隔</span>
+                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Retriable error"</span><span class="token punctuation">)</span>
+                <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+                    <span class="token comment" spellcheck="true">// 停止重试</span>
+                    <span class="token keyword">throw</span> err
+                <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 定义其他选项...</span>
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> controller<span class="token punctuation">.</span><span class="token function">abort</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 清理函数，用于取消请求</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span> messages<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> SseComponent
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>做了这些拦截后，对用户的体验更加有好些，当然这是在前期服务不稳定的情况下，已经全然拦截住了。还是很有趣的一次拦截体验。</p>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2024/07/24/frontend-sse/%20nostalgia%20使用SSE 流式传输"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2025/11/15/ai-begin/" title="开始 AI 全栈之路"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: 开始 AI 全栈之路</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2023/11/26/other-markdownGuide/" title="Markdown语法指南">下一篇: Markdown语法指南&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>Github Actions 部署方法记录 · nostalgia</title><meta name="description" content="使用Git Actions部署
+文档参考参考如下
+
+双仓库部署掘金文档1
+单仓库actions 配置掘金文档2
+
+
+前言在通过vuepress搭建博客平台后，发现1.0爬不起动了，随后升级2.0平台，采用了新的reco大佬的theme原有流程是
+
+写文章
+build后生成静态文件
+通过bash脚本自"><meta name="og:description" content="使用Git Actions部署
+文档参考参考如下
+
+双仓库部署掘金文档1
+单仓库actions 配置掘金文档2
+
+
+前言在通过vuepress搭建博客平台后，发现1.0爬不起动了，随后升级2.0平台，采用了新的reco大佬的theme原有流程是
+
+写文章
+build后生成静态文件
+通过bash脚本自"><meta name="twitter:site" content="nostalgia"><meta name="twitter:title" content="Github Actions 部署方法记录"><meta name="twitter:card" content="summary"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/nostalgia/images/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/nostalgia/css/bootstrap.min.css"><link rel="stylesheet" href="/nostalgia/css/font-awesome.min.css"><link rel="stylesheet" href="/nostalgia/css/style.css"><link rel="stylesheet" href="/nostalgia/css/blog_basic.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 8.1.2"><link rel="stylesheet" href="/nostalgia/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/nostalgia/css/prism-line-numbers.css" type="text/css"></head><body><div class="container" id="stage"><div class="row"><div class="col-sm-3 col-xs-12 side-container invisible" id="side-bar"><div class="vertical-text site-title"><h3 class="site-title-small" tabindex="-1"><a class="a-title" href="/nostalgia/">umwelt blog</a></h3><h1 class="site-title-large" tabindex="-1"><a class="a-title" href="/nostalgia/">我未曾珍惜的,我不再拥有</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div class="site-title-links" id="site-nav"><ul><li><a href="/nostalgia/">首页</a></li><li><a href="/nostalgia/archives">归档</a></li><li><a href="/nostalgia/categories">分类</a></li><li><a href="/nostalgia/tags">标签</a></li><li class="soc"><a href="https://github.com/spikekkk" target="_blank" rel="noopener noreferrer" aria-label="Github"><i class="fa fa-github">&nbsp;</i></a><a href="https://spikekkk.github.io/nostalgia/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div class="col-sm-9 col-xs-12 main-container invisible" id="main-container"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>Github Actions 部署方法记录</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2023-11-26</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/categories/reco/" title="reco">reco</a><span>&nbsp;</span></span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a class="a-tag" href="/nostalgia/tags/github/" title="github">github</a><span>&nbsp;</span></span></p><p class="post-abstract"><h1><span id="使用git-actions部署">使用Git Actions部署</span></h1><blockquote>
+<p><strong>文档参考</strong><br>参考如下</p>
+<ul>
+<li>双仓库部署<a target="_blank" rel="noopener" href="https://juejin.cn/post/7008847699919241229">掘金文档1</a></li>
+<li>单仓库actions 配置<a target="_blank" rel="noopener" href="https://juejin.cn/post/7000572105154625567">掘金文档2</a></li>
+</ul>
+</blockquote>
+<h2><span id="前言">前言</span></h2><p>在通过vuepress搭建博客平台后，发现1.0爬不起动了，随后升级2.0平台，采用了新的reco大佬的theme<br>原有流程是</p>
+<ol>
+<li>写文章</li>
+<li>build后生成静态文件</li>
+<li>通过bash脚本自动提交到pages分支</li>
+<li>GitHub部署完毕访问</li>
+</ol>
+<p>原有步骤需要自己在本地手动打包push,虽然有脚本文件当时也不方便<br>@<a href="../../deploy.sh">code</a></p>
+<p>懒惰才是人类进步的动力哈哈哈</p>
+<p>便考虑有没有自动化脚本，参考到原有reco主题推荐博文<a target="_blank" rel="noopener" href="https://vuepress-theme-reco.recoluan.com/blogs/github-actions.html">自动化部署</a>,<br>进行搜索找到了掘金论坛actions参考教程，同时又考虑到文章中有些是进行了加密的，放在一个public仓库得不偿失，想着blog源码放置在private仓库中保存最好</p>
+<h2><span id="设置-personal-access">设置 personal access</span></h2><p>仓库要部署Actions, 需要在仓库总设置个人 personal access </p>
+<p>设置方法如下：</p>
+<ol>
+<li>进入 Github 后，点击我们的头像，</li>
+<li>然后依次进入 Settings -&gt; Developer settings -&gt; Personal access tokens，对应地址就是 Token 生成。</li>
+<li>然后点击右上方的 Generate new token，接着输入 token 的名字，这个名字可以随意，不过还是推荐根据它的用途来命名。</li>
+<li>然后选 Expiration，也就是这个 Token 的有效期，如果我们要长期用，建议选为 No expiration，意思就是无期限。</li>
+<li>最后就是选权限，一般来讲这里选 repo 就够了，但是如果你不确定，那就全都选上也行。然后点击 Generate Token，会生成一个令牌，注意这里它只会出现一次，一旦刷新该网页就不见了，所以最好把它复制到你的备忘录备份一下，而且我们待会也是需要用到这个 Token 的。</li>
+</ol>
+<h2><span id="设置secrets">设置Secrets</span></h2><p>在存放博客源码仓库中，</p>
+<ol>
+<li>点击 Settings -&gt; Secrets，</li>
+<li>点击 New repository secret，新建一个 Secret。</li>
+<li>这里的名字要命名为 <code>BLOG_TOKEN</code>，然后 Value 就是我们上一步中所生成的 Token。</li>
+<li>在配置的.yml文件中需要使用配置的token,名称需要保持一致</li>
+</ol>
+<pre class="line-numbers language-yml"><code class="language-yml"> ACCESS_TOKEN: $&#123;&#123; secrets.BLOG_TOKEN &#125;&#125; 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2><span id="编写actions">编写Actions</span></h2><p>进入项目的的 Actions 选项，然后新建一个 workflow</p>
+<p>生成后的 main.yml 位于项目的 .github&#x2F;workflows 目录下</p>
+<ul>
+<li>参考模板如下：</li>
+</ul>
+<pre class="line-numbers language-yml"><code class="language-yml">name: Deploy
+
+# on 定义的是执行该 Action 的时机，这里的配置是指：
+# 当 main 分支的 push 事件被触发的时候执行该任务
+on:
+  push:
+    branches: [main]
+# jobs 是定义你要运行的具体任务，
+# 每个 Action 可以有多个 Job
+# 每个 Job 可以有多个 Step
+# 每个 Step 又可以有多个 Run
+jobs:
+  build:
+    runs-on: ubuntu-latest # 运行在 ubuntu 系统环境下
+    steps:
+      - uses: actions/checkout@v2 # uses 命令允许我们使用别人定义好的 Action，这里是从仓库检出分支
+      - uses: actions/setup-node@v2 # 这里是设置 node 版本
+        with: # 这里相当于传递给上面指令的参数，告诉他使用 node@12.13.1 这个版本
+          node-version: '12.13.1'
+      - name: Install Dependencies # name 定义步骤的名称，这个可以在该 Action 运行起来之后，在 Github Actions Tab 下看到
+        run: | # `run: |` 的方式，允许我们一次定义多个要执行的命令
+          yarn install
+          yarn run build
+      - name: Push To Pages
+        working-directory: ./dist # 指定下面指令运行的目录
+        run: |
+          git init
+          git checkout -b main
+          git add -A
+        # 这里把下面所有 `<your_name>/<your_email>/<commit_msg>/<your_token>` 替换成你自己的就可以了
+          git -c user.name='<your_name>' -c user.email='<your_email>' commit -m '<commit_msg>'
+        # 这里需要一个 共开仓库 的 secrets 配置，这里的 secrets 是一个环境变量，可以直接拿过来直接用
+          git remote add origin https://$&#123;&#123;secrets.<your_token>&#125;&#125;@github.com/<your_name>/blog.git
+          git push origin main -f -q
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></your_name></your_token></commit_msg></your_email></your_name></your_token></commit_msg></your_email></your_name></code></pre>
+<p>发现评论区提供一个新的GitHub Actions 插件更加简洁<br><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/github-pages-action#%EF%B8%8F-deploy-to-subdirectory-destination_dir">GitHub Pages action</a> </p>
+<blockquote>
+<p>Deploy to external repository external_repository<br>By default, your files are published to the repository which is running this action. If you want to publish to another repository on GitHub, set the environment variable external_repository to username external-repository.</p>
+</blockquote>
+<pre class="line-numbers language-yml"><code class="language-yml">- name: Deploy
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    deploy_key: $&#123;&#123; secrets.ACTIONS_DEPLOY_KEY &#125;&#125;
+    external_repository: username/external-repository
+    publish_branch: your-branch  # default: gh-pages
+    publish_dir: ./public
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>You can use deploy_key or personal_token. When you use deploy_key, set your private key to the repository which includes this action and set your public key to your external repository.</p>
+<p>Note that GITHUB_TOKEN has no permission to access to external repositories. Please create a personal access token and set it to personal_token like personal_token: <code>$&#123;&#123; secrets.PERSONAL_TOKEN &#125;&#125;.</code></p>
+<p>Use case:</p>
+<p>A GitHub Free Plan account cannot use the GitHub Pages in a private repository. To make your source contents private and deploy it with the GitHub Pages, you can deploy your site from a private repository to a public repository using this option.</p>
+<p>peaceiris&#x2F;homepage: A private repository running this action with external_repository: peaceiris&#x2F;peaceiris.github.io<br>peaceiris&#x2F;peaceiris.github.io: A public repository using GitHub Pages</p>
+</blockquote>
+<p>所以方法不是唯一的，那个方便就按照那个来吧<br>我参考的是直接往blogpags仓库覆盖即可</p>
+<h2><span id="运行查看actions是否报错">运行查看Actions是否报错</span></h2><p>我遇到的最多报错就是文件获取路径不对<br>修改workflow文件路径便成功了</p>
+<pre class="line-numbers language-yml"><code class="language-yml"> working-directory: .vuepress/dist # 指定下面指令运行的目录
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>完结</p>
+<h2><span id="github-actions参考文档">GitHub Actions参考文档</span></h2><p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html">阮一峰老师的 GitHub Actions 入门教程</a></p>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></span><span class="soc"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></span><span class="soc"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=https://spikekkk.github.io/nostalgia/2023/11/26/tips-git-action/%20nostalgia%20Github Actions 部署方法记录"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/nostalgia/2023/11/26/other-markdownGuide/" title="Markdown语法指南"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: Markdown语法指南</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/nostalgia/2021/11/16/frontend-vue3/" title="Vue3学习">下一篇: Vue3学习&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><style>:root {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #f9f9f9;
+    --gt-btn-bg-color: #6fb3e0;
+    --gt-btn-hover-bg-color: #4c8fbd;
+    --gt-btn1-bg-color: #fff;
+    --gt-btn1-hover-bg-color: #eee;
+    --gt-admin-comment-bg-color: #f6f9fe;
+    --gt-comment-bg-color: #f9f9f9;
+    color-scheme: light;
+}
+.dark-theme {
+    --gt-popup-bg-color: #444;
+    --gt-header-preview-bg-color: #202020;
+    --gt-btn-bg-color: #003153;
+    --gt-btn-hover-bg-color: #202020;
+    --gt-btn1-bg-color: #444;
+    --gt-btn1-hover-bg-color: #222;
+    --gt-admin-comment-bg-color: #182030;
+    --gt-comment-bg-color: #202020;
+    color-scheme: dark;
+}
+.gt-header a, .gt-comments a, .gt-popup a { border-bottom: 0; }
+.gt-container .gt-popup .gt-action.is--active::before { top: .7em; }
+.gt-container .gt-no-init,
+.gt-container .gt-initing-text { color: var(--text-color) !important; }
+.gt-container .gt-svg { fill: currentColor; }
+.gt-container .gt-counts,
+.gt-container .gt-user-name,
+.gt-container .gt-version { color: var(--text-color) !important; }
+.gt-container .gt-popup { background: var(--content-bg-color) !important; }
+.gt-container .gt-header-textarea { background-color: var(--selected-bg-color) !important; }
+.gt-container .gt-comment-content { background-color: var(--gt-comment-bg-color) !important; }
+.gt-container .gt-comment-body { color: var(--text-color) !important; }</style><div class="comments" id="gitalk-container"></div><script>(function() {
+    var loadGitalk = function() {
+        var conf = {"enable":true,"github_id":"spikekkk","repo":"nostalgia-comments","client_id":"Ov23liuHxRgOD701FKkW","client_secret":"7f07b5dd19e5296e4a5fe8aa2e587d4e1fc3f0e4","admin_user":"spikekkk","distraction_free_mode":true,"issue_term":"pathname","language":"zh-CN"};
+        var gitalkId = window.location.pathname;
+        new Gitalk({
+            clientID: conf.client_id,
+            clientSecret: conf.client_secret,
+            repo: conf.repo,
+            owner: conf.github_id,
+            admin: [conf.admin_user],
+            id: gitalkId,
+            distractionFreeMode: conf.distraction_free_mode,
+            language: conf.language,
+            proxy: conf.proxy || 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+        }).render('gitalk-container');
+    };
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+    script.onload = loadGitalk;
+    document.head.appendChild(script);
+})();
+</script></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2026&nbsp;<a target="_blank" href="https://spikekkk.github.io/nostalgia" rel="noopener noreferrer">umwelt</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/nostalgia/js/jquery-3.1.0.min.js"></script><script src="/nostalgia/js/bootstrap.min.js"></script><script src="/nostalgia/js/jquery-migrate-1.2.1.min.js"></script><script src="/nostalgia/js/jquery.appear.js"></script><script src="/nostalgia/js/google-analytics.js"></script><script src="/nostalgia/js/typography.js"></script></body></html>
